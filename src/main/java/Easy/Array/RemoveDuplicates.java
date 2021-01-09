@@ -1,4 +1,8 @@
+package Easy.Array;
+
 public class RemoveDuplicates {
+
+    // For the exercise statement take a look at: https://leetcode.com/explore/featured/card/top-interview-questions-easy/92/array/727/
 
     public int removeDuplicates(int[] nums) {
 
