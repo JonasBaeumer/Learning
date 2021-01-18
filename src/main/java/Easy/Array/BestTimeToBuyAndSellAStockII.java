@@ -14,11 +14,17 @@ public class BestTimeToBuyAndSellAStockII {
             if(prices[i] < buyPrice) { // An even cheaper buy price was available
                 buyPrice = prices[i];
             } else if(prices[i] > buyPrice) { // Profit can be locked in
-                profit = buyPrice - prices[i];
+                profit += prices[i] - buyPrice;
                 buyPrice = prices[i];
             }
         }
         return profit;
+    }
+
+    public static void main(String[] args) {
+        int[] test = new int[]{7,1,5,3,6,4};
+        BestTimeToBuyAndSellAStockII testB = new BestTimeToBuyAndSellAStockII();
+        System.out.println(testB.maxProfit(test));
     }
 
 }
