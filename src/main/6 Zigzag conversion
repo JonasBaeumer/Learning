@@ -1,0 +1,30 @@
+class Solution(object):
+    def convert(self, s, numRows):
+        if numRows == 1 or numRows >= len(s):
+            return s
+
+        n = len(s)
+        interval = 2 * numRows - 2 
+        out = []
+
+        for r in range(numRows):
+            i = r
+            stepA = interval - 2 * r   # down-right
+            stepB = 2 * r               # up-right
+            useA = True
+
+            while i < n:
+                out.append(s[i])
+
+                if r == 0 or r == numRows - 1:
+                    # top/bottom rows: single step
+                    i += interval
+                else:
+                    # middle rows: alternate steps
+                    if useA:
+                        i += stepA
+                    else:
+                        i += stepB
+                    useA = not useA
+
+        return "".join(out)
