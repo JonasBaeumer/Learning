@@ -1,0 +1,55 @@
+# Arithmetic approach
+
+class Solution(object):
+    def reverse(self, x):
+        """
+        :type x: int
+        :rtype: int
+        """
+        number_negative = False
+        inverse_number = 0
+        number = x
+        
+        if x < 0:
+            number *= -(1)
+            number_negative = True
+
+        while(number != 0):
+            digit = number % 10
+            inverse_number = inverse_number * 10 + digit
+            number /= 10
+        
+        if number_negative:
+            inverse_number *= (-1)
+        
+        if -2**31 <= inverse_number <= (2**31)-1 :
+            return inverse_number
+        else:
+            return 0
+
+# Simpler naive approach
+
+class Solution(object):
+    def reverse(self, x):
+        """
+        :type x: int
+        :rtype: int
+        """
+        number_negative = False
+        number = x
+        
+        if x < 0:
+            number *= -(1)
+            number_negative = True
+        
+        string_number = ""
+
+        for character in reversed(str(number)):
+            string_number += character
+        
+        number = (int(string_number) if not number_negative else int(string_number) * -1)
+
+        if -2**31 <= number <= (2**31)-1:
+            return number
+        else:
+            return 0
