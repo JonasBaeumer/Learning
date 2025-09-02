@@ -1,3 +1,18 @@
+# Advanced approach: Use a hash-based ds for faster lookup time (T: O(n), S: O(n))
+
+class Solution:
+    def hasDuplicate(self, nums: List[int]) -> bool:
+
+        nums_store = set()
+
+        for number in nums:
+            if number not in nums_store:
+                nums_store.add(number)
+            else:
+                return True
+        
+        return False
+
 # Naive approach (time complexity (O(n^2)), space complexity (O(n))
 
 class Solution:
