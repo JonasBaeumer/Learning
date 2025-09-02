@@ -1,0 +1,16 @@
+# Naive approach (time complexity (O(n)), space complexity (O(2n))
+
+class Solution:
+    def hasDuplicate(self, nums: List[int]) -> bool:
+
+        # loop through the array and keep a duplicate array, if this one is already contained just keep normal values 
+
+        nums_store = []
+
+        for number in nums:
+            if number not in nums_store:
+                nums_store.append(number)
+            else:
+                return True
+        
+        return False
