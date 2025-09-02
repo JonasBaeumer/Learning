@@ -1,4 +1,4 @@
-# Naive approach (time complexity (O(n)), space complexity (O(2n))
+# Naive approach (time complexity (O(n^2)), space complexity (O(n))
 
 class Solution:
     def hasDuplicate(self, nums: List[int]) -> bool:
