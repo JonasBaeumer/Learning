@@ -1,3 +1,29 @@
+# More optimized approach
+# Timecomplexity: O(n) + O(m) = O(m + n) or O(n) if same size
+# Spacecomplexity: O(k) or O(1) depending on alphabetsize, or fixed size of the alphabet.
+class Solution:
+    def isAnagram(self, s: str, t: str) -> bool:
+
+        anagram_dict = {}
+
+        for char in s:
+            if char in anagram_dict: 
+                anagram_dict[char] += 1
+            else:
+                anagram_dict[char] = 1
+        
+        for char in t:
+            if char in anagram_dict:
+                anagram_dict[char] -= 1
+                if anagram_dict[char] == 0:
+                    del anagram_dict[char]
+            else:
+                anagram_dict[char] = 1
+        
+        if anagram_dict:
+            return False
+        return True
+
 # Naive approach
 # Timecomplexity: O(n log n) + O(n log n) + O(n) = O(n log n)
 # Spacecomplexity: O(n) + O(n) = O(n)
