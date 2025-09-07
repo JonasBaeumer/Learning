@@ -1,6 +1,6 @@
 # More optimized approach
 # Timecomplexity: O(n) + O(m) = O(m + n) or O(n) if same size
-# Spacecomplexity: O(k) or O(1) depending on alphabetsize, or fixed size of the alphabet. 
+# Spacecomplexity: O(k) or O(1) depending on alphabetsize, or fixed size of the alphabet.
 class Solution:
     def isAnagram(self, s: str, t: str) -> bool:
 
