@@ -16,7 +16,8 @@ root.render(
     <p>This is my website!</p>
 )
 ```
-the is not unified parent element, in react at multiple components at the same level must share a common parent
+the is not unified parent element, in react at multiple components at the same level must share a common parent, since 
+react on render one parent element at a time. 
 
 4. What does it mean for something to be "declarative" instead of "imperative"?
 declarative -> We say what we want, but dont have to care about the how
