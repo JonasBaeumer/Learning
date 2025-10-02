@@ -1,3 +1,30 @@
+1. What is a React component?
+A javascript object that will be embedded into html code. It is reusable so it has to be defined only once and can be reused across the codebase. 
+
+2. What's wrong with this code?
+```
+function myComponent() {
+    return (
+        <small>I'm tiny text!</small>
+    )
+}
+```
+This code violates the coding convention for ReactComponents (the first letter should be written in capital letters)
+
+3. What's wrong with this code?
+```
+function Header() {
+    return (
+        <header>
+            <img src="./react-logo.png" width="40px" alt="React logo" />
+        </header>
+    )
+}
+
+root.render(Header())
+```
+In react convention, while we officially declare React components in the scope of functions we shouldnt call the function in the same way we call normal functions. Rather we should call it like a normal html component (e.g. <Header />)
+
 1. Where does React put all of the elements I create in JSX when I 
    call `root.render()`?
 
