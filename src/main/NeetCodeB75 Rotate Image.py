@@ -1,6 +1,6 @@
 # Naive approach: Go through each of the rows one by one in the original matrix and add it as a column in matrix)
-# Time complexity: n rows, n columns = nxn = n^2
-# Space complexity: 2 matrices with n rows and n columns = n^2 + n^2 = n^2
+# Time complexity: n rows, n columns = nxn = O(n^2)
+# Space complexity: 2 matrices with n rows and n columns = n^2 + n^2 = O(n^2)
 
 class Solution:
     def rotate(self, matrix: List[List[int]]) -> None:
