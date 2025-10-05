@@ -1,6 +1,29 @@
 # Solution without using the division operator
 # Idea: We have a prefix and postfix array that will contain the results of our multiplication
 # up to that part. This way when we calculate i we just have to calculate [i-1] * [i+1]
+# Optimization: Do I need the prefix or postfix array? Or can I somehow do this without them?
+# Idea: I could run over our solution array twice, once from the front, (prefix)
+# And then once from the back (postfix), catch prefix for i is i+1
+# Runtime: O(n) + O(n) = O(2n) = O(n)
+# Spacetime: O(n) + O(1) = O(n)
+
+class Solution:
+    def productExceptSelf(self, nums: List[int]) -> List[int]:
+        solutions = [1] * len(nums)
+        
+        for i in range(0, len(solutions)-1):
+            solutions[i+1] = solutions[i]*nums[i]
+
+        postfix_product = 1
+        for i in range(len(nums)-1, -1, -1):
+            solutions[i] *= postfix_product
+            postfix_product *= nums[i]
+
+        return solutions
+
+# Solution without using the division operator
+# Idea: We have a prefix and postfix array that will contain the results of our multiplication
+# up to that part. This way when we calculate i we just have to calculate [i-1] * [i+1]
 # Runtime: O(n) + O(n) + O(n) = O(3n) = O(n)
 # Spacetime: O(n) + O(n) + O(n) = O(3n) = O(n) 
 
