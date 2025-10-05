@@ -10,6 +10,7 @@
 # Runtime: O(n) + O(n) = O(2n) = O(n)
 # Spacetime: O(n) + O(1) = O(n)
 
+
 class Solution:
     def productExceptSelf(self, nums: List[int]) -> List[int]:
         solutions = [0] * len(nums)
@@ -31,7 +32,7 @@ class Solution:
         
         for i in range(len(solutions)):
             if (nums[i] != 0):
-                solutions[i] = int(product / nums[i])
+                solutions[i] = product // nums[i]
             
         return solutions
 
