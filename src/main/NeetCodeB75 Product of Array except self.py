@@ -1,3 +1,38 @@
+# Solution without using the division operator
+# Idea: We have a prefix and postfix array that will contain the results of our multiplication
+# up to that part. This way when we calculate i we just have to calculate [i-1] * [i+1]
+# Runtime: O(n) + O(n) + O(n) = O(3n) = O(n)
+# Spacetime: O(n) + O(n) + O(n) = O(3n) = O(n) 
+
+class Solution:
+    def productExceptSelf(self, nums: List[int]) -> List[int]:
+        solutions = [0] * len(nums)
+        
+        # Our prefix and postfix arrays
+        prefix = [1] * len(nums)
+        for i in range(len(nums)):
+            if i == 0:
+                prefix[i] = nums[i]
+            else:
+                prefix[i] = prefix[i-1]*nums[i]
+
+        postfix = [1] * len(nums)
+        for i in range(len(nums)-1, -1, -1):
+            if i == len(nums)-1:
+                postfix[i] = nums[i]
+            else:
+                postfix[i] = postfix[i+1]*nums[i]
+
+        for i in range(len(solutions)):
+            if((i-1 == -1)):
+                solutions[i] = postfix[i+1]
+            elif ((i+1) == (len(solutions))):
+                solutions[i] = prefix[i-1]
+            else:
+                solutions[i] = prefix[i-1] * postfix[i+1]
+        
+        return solutions
+
 # Problem: I have a nested loop that leads to O(n^2).
 # Can I somehow get this down to a single loop or decoupled loops? O(n) or O(2n)
 # How do I avoid to do the repeated work??
