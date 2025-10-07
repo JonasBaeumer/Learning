@@ -1,0 +1,65 @@
+.header {
+    background: #27292c;
+    color: white;
+}
+
+.header-job {
+    color: #F3BF99;
+}
+
+.header-bar {
+    display: flex;
+    justify-content: center;
+}
+
+.header-email {
+    background: #FFFFFF;
+    color: #1E1E1E;
+    margin-right: 10px;
+    width: 100px;
+    height: 30px;
+}
+
+.header-linkedin {
+    background: #5093E2;
+    color: #FFFFFF;
+    margin-left: 10px;
+    width: 100px;
+    height: 30px;
+}
+
+.about-text {
+    color: #DCDCDC;
+}
+
+.interests-text {
+    color: #DCDCDC;
+}
+
+footer {
+    background: #1C1C1C;
+}
+
+.footer-bar {
+    display: flex;
+    justify-content: center;
+}
+
+.footer-icon {
+    background: #918E9B;
+    width: 30px;
+    height: 30px;
+    margin-left: 10px;
+    margin-right: 10px
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background: #27292c;
+    color: white;
+    text-align: center;
+}
+
+h1 {
+    margin-top: 40px;
+}
