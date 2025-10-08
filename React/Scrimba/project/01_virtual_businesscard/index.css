@@ -3,50 +3,78 @@
     color: white;
 }
 
+.header-name {
+    margin-bottom: 5px;
+}
+
 .header-job {
     color: #F3BF99;
+    margin-top: 0px;
 }
 
 .header-bar {
+    margin-top: 20px;
     display: flex;
     justify-content: center;
 }
 
 .header-email {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     background: #FFFFFF;
     color: #1E1E1E;
     margin-right: 10px;
     width: 100px;
     height: 30px;
+    border-radius: 6px;
 }
 
 .header-linkedin {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     background: #5093E2;
     color: #FFFFFF;
     margin-left: 10px;
     width: 100px;
     height: 30px;
+    border-radius: 6px;
+}
+
+.header-icon {
+    width: 15px;
+    height: 15px;
+    margin-right: 10px;
 }
 
 .about-text {
     color: #DCDCDC;
+    text-align: justify;
+    margin-left: 10px;
+    margin-right: 10px;
 }
 
 .interests-text {
     color: #DCDCDC;
+    text-align: justify;
+    margin-block: 25px;
+    margin-left: 10px;
+    margin-right: 10px;
 }
 
 footer {
     background: #1C1C1C;
-}
-
-.footer-bar {
+    height: 50px;
+    border-radius: 6px;
     display: flex;
     justify-content: center;
+    align-items: center;
 }
 
 .footer-icon {
     background: #918E9B;
+    border-radius: 10px;
     width: 30px;
     height: 30px;
     margin-left: 10px;
