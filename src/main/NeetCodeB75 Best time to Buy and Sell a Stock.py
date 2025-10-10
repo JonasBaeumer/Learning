@@ -1,7 +1,7 @@
 # Naive approach: Loop and then go from the found solution forward to find best option
-# Runtime: O(n log n)?
+# Number of iterations: n - 1 + n - 2 + n - 3 -> n(n+1)/2 -> O(n^2)
+# Runtime: O(n^2)
 # Spacetime: O(1)
-
 class Solution:
     def maxProfit(self, prices: List[int]) -> int:
         best_profit = 0
