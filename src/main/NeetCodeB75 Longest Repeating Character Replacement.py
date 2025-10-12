@@ -1,4 +1,35 @@
+# New approach: use a dict to determine for the current window size which character is most
+# frequent to allow us to max out the window size 
+# Runtime: O(n^2)
+# Spacetime: O(1) since dict can have at max 26 values for the alphabet
 
+class Solution:
+    def characterReplacement(self, s: str, k: int) -> int:
+        def sort_dict(d: dict) -> list:
+            # Sort by frequency descending
+            return sorted(d.items(), key=lambda kv: (-kv[1], kv[0]))
+
+        max_distance = 0
+
+        for left in range(len(s)):
+            frequency_dict = {}
+            for right in range(left, len(s)):
+                current_char = s[right]
+                if current_char not in frequency_dict:
+                    frequency_dict[current_char] = 1
+                else:
+                    frequency_dict[current_char] += 1
+
+                sorted_dict = sort_dict(frequency_dict)
+                max_freq = sorted_dict[0][1]
+                window_size = right - left + 1
+
+                if window_size - max_freq > k:
+                    break
+
+                max_distance = max(max_distance, window_size)
+
+        return max_distance
 
 # --------- DIDNT WORK!
 
