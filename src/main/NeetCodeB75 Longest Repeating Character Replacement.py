@@ -1,3 +1,44 @@
+# Why old solutions is bad: We are doing a lot of double duplications and recounting of the
+# same window by resetting our two pointer left and right
+# New approach: Instead of recounting we dynamically grow and shrink our window
+# Once our window from the current starting point is maxed out, we shrink it (moving left
+# pointer) to allow for moving our window forward (grow = move right pointer)
+# Runtime: O(n)
+# Spacetime: O(m)
+
+class Solution:
+    def characterReplacement(self, s: str, k: int) -> int:
+        def sort_dict(d: dict) -> list:
+            # Sort by frequency descending
+            return sorted(d.items(), key=lambda kv: (-kv[1], kv[0]))
+
+        max_distance = 0
+        left = 0
+        right = 0
+        frequency_dict = {}
+
+        while(right < len(s)):
+            current_char = s[right]
+            if current_char not in frequency_dict:
+                frequency_dict[current_char] = 1
+            else:
+                frequency_dict[current_char] += 1
+
+            max_freq = max(frequency_dict.values())
+            window_size = right - left + 1
+
+            # We need to shrink because we reached the limit
+            if (window_size - max_freq > k):
+                frequency_dict[s[left]] -= 1
+                left+=1
+            else:
+                max_distance = max(max_distance, window_size)
+            
+            right+=1
+
+
+        return max_distance
+
 # New approach: use a dict to determine for the current window size which character is most
 # frequent to allow us to max out the window size 
 # Runtime: O(n^2)
