@@ -1,3 +1,37 @@
+
+1. What do props help us accomplish?
+Props help us to make our components truly reusable. Now we can use components as a component blueprint that will be dynamically populated with different data. This way we strongly reduce code duplucations as we only have to define a component once and can just create copies of it with different data that should be displayed. 
+
+
+2. How do you pass a prop into a component?
+<Component prop1="" prop2="" prop3="">
+export default function Component(props){
+    return (
+        <h1>{props.prop1}{props.prop2}{props.prop3}</h1>
+    )    
+}
+
+
+3. Can I pass a custom prop (e.g. `blahblahblah={true}`) to a native
+   DOM element? (e.g. <div blahblahblah={true}>) Why or why not?
+   No that is not possible, since html / dom elements are predefined and therefore have a specific set of allowed parameters that one can pass (arguments). This is unlike react where we build custom components where we can define what props we pass.
+
+
+4. How do I receive props in a component?
+function Navbar(props) {
+    return (
+        <header>
+            {props}
+        </header>
+    )
+}
+
+
+5. What data type is `props` when the component receives it?
+Javascript Object
+
+---------------------------------------------------
+
 1. What is a React component?
 A javascript object that will be embedded into html code. It is reusable so it has to be defined only once and can be reused across the codebase. 
 
