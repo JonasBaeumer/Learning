@@ -1,3 +1,44 @@
+import Contact from "./Contact"
+
+/**
+ * Challenge (I'm sorry!): Add all the rest of the
+ * data to the contact card instances. 😈
+ */
+
+function App() {
+    return (
+        <div className="contacts">
+            <Contact
+                img="./images/mr-whiskerson.png"
+                name="Mr. Whiskerson"
+                tel="(212) 555-1234"
+                mail="mr.whiskaz@catnap.meow"
+            />
+            <Contact 
+                img="./images/fluffykins.png"
+                name="FluffyKins"
+                tel="(212) 555-2345"
+                mail="fluff@me.com"
+            />
+            <Contact 
+                img="./images/felix.png"
+                name="Felix"
+                tel="(212) 555-4567"
+                mail="thecat@hotmail.com"
+            />
+            <Contact 
+                img="./images/pumpkin.png"
+                name="Pumpkin"
+                tel="(0800) CAT KING"
+                mail="pumpkin@scrimba.com"
+            />
+        </div>
+    )
+}
+
+export default App
+
+
 import ReactDOM from 'react-dom/client';
 
 function App() {
