@@ -16,8 +16,14 @@ export default function Component(props){
    DOM element? (e.g. <div blahblahblah={true}>) Why or why not?
    No that is not possible, since html / dom elements are predefined and therefore have a specific set of allowed parameters that one can pass (arguments). This is unlike react where we build custom components where we can define what props we pass.
 
+   Sample solution:
+   No, because the JSX we use to describe native DOM elements will
+be turned into REAL DOM elements by React. And real DOM elements
+only have the properties/attributes specified in the HTML specification.
+(Which doesn't include properties like `blahblahblah`)
 
-4. How do I receive props in a component?
+
+5. How do I receive props in a component?
 function Navbar(props) {
     return (
         <header>
@@ -27,7 +33,7 @@ function Navbar(props) {
 }
 
 
-5. What data type is `props` when the component receives it?
+6. What data type is `props` when the component receives it?
 Javascript Object
 
 ---------------------------------------------------
