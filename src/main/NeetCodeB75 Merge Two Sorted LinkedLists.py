@@ -1,3 +1,35 @@
+# Same code just cleaner
+# Optimized solution: Go through both lists simultaneously and check wether 
+# which value is bigger (as long as one list non empty)
+# Runtime O(n+m)
+# Spacetime O(1)
+
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
+
+class Solution:
+    def mergeTwoLists(self, list1: Optional[ListNode], list2: Optional[ListNode]) -> Optional[ListNode]:
+
+        dummy = node = ListNode()
+
+        while list1 and list2:
+            if (list1.val <= list2.val):
+                dummy.next = list1
+                list1 = list1.next
+            else:
+                dummy.next = list2
+                list2 = list2.next
+
+            dummy = dummy.next
+        # Once one of the lists reached its end we dont need to continue the loop
+        # we can just append the rest
+        dummy.next = list1 or list2
+
+        return node.next
+
 # Optimized solution: Go through both lists simultaneously and check wether 
 # which value is bigger (as long as one list non empty)
 # Runtime O(n+m)
