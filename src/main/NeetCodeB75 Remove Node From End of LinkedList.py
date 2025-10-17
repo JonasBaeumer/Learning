@@ -1,3 +1,10 @@
+# Approach: We first have to determine the length of our list again before we know at which position we can remove the element
+# (relative to the start). Since for normal removal we need to know the prev, current and next element we first need to cover 
+# a bunch of edge cases to avoid Null pointer errors (e.g. first element, list size 1, last element)
+# Then we can remove the element and return our start pointer
+# Runtime: O(n) + O(n) = O(2n) -> O(n)
+# Spacetime: O(1) just need to keep track of the respective pointers
+
 # Definition for singly-linked list.
 # class ListNode:
 #     def __init__(self, val=0, next=None):
