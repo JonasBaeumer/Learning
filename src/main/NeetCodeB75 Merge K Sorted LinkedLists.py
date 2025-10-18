@@ -4,7 +4,7 @@
 #         self.val = val
 #         self.next = next
 
-# Runtime: O(n) * O(k) = k length of the lists
+# Runtime: O(n) * O(k) = k number of lists in lists, n number of nodes that I am appending in total
 # Spacetime: O(1) just pointers
 
 class Solution:    
