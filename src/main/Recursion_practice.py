@@ -1,3 +1,23 @@
+# Problem:
+# Given a non-negative integer n, return the sum of its digits using recursion.
+
+# For example:
+#	•	Input: n = 1234
+#	•	Output: 10 (since 1 + 2 + 3 + 4 = 10)
+# Idea: We can use two operation to extract the relevant number
+# We need to first: Get the last digit 
+# Second: Remove it before passing the number down
+# Basecase n is 0 
+# Runtime: O(n), n length of number
+# Spacetime: O(n)
+
+def sumOfDigits(n: int) -> int:
+    if n == 0:
+        return 0
+    return n%10 + sumOfDigits(n // 10)
+        
+print(sumOfDigits(1234))
+
 # Example 2: Fibonacci Sequence
 # This code defines a recursive function 
 # to calculate nth Fibonacci number, where each number 
