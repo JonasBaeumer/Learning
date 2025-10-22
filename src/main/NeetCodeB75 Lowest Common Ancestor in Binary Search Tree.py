@@ -5,6 +5,33 @@
 #         self.left = left
 #         self.right = right
 
+# We are working on a binary search tree not a normal binary Tree, we can use its properties 
+# to make our lifes easier 
+# Runtime: O(h), height of the tree
+# Spacetime O(h), height of the tree
+
+class Solution:
+
+    def lowestCommonAncestor(self, root: TreeNode, p: TreeNode, q: TreeNode) -> TreeNode:
+        if root.val == p.val or root.val == q.val:
+            return root
+        if p.val < root.val and q.val > root.val:
+            return root
+        if p.val > root.val and q.val < root.val:
+            return root
+
+        if p.val < root.val:
+            return self.lowestCommonAncestor(root.left, p, q)
+        elif p.val > root.val:
+            return self.lowestCommonAncestor(root.right, p, q)
+
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+
 # This solution works for general binary trees! However we are dealing with a binary search tree which we use to our advantage here.
 # Runtime: O(h), h depth of the three
 # Spacetime: O(h)
