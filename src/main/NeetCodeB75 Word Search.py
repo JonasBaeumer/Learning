@@ -47,9 +47,8 @@ class Solution:
         # Loop over the array to ensure we explore with DFS from only viable starting points
         for i in range(len(board)):
             for j in range(len(board[0])):
-                if board[i][j] == word[0]:
-                    if dfs("", i, j):
-                        return True
+                if dfs("", i, j):
+                    return True
         return False
 
 # Approach: DFS to explore once we found a possible start point, remember indexes we have visited and 
