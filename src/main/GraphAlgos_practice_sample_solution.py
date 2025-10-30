@@ -272,6 +272,25 @@ visited = [False]*5
 print("TEST COMPONENTS:", connected_components()==3)
 
 ###############################################################
+# 8. Connected Components with Union find for better RunTime than O(V + E)
+###############################################################
+
+# global structures for this exercise
+adj = {0:[1],1:[0],2:[],3:[4],4:[3]}
+visited = [False]*5
+
+def connected_components():
+    
+     
+
+explain_components_union_find = """
+"""
+
+# === TESTS ===
+visited = [False]*5
+print("TEST COMPONENTS UNION FIND:", connected_components()==3)
+
+###############################################################
 # 9. Bipartite Check
 ###############################################################
 
