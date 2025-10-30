@@ -235,7 +235,7 @@ topo_sort()
 print("TEST TOPO SIMPLE:", order in ([0,1,2],[0,2,1]))
 
 ###############################################################
-# 8. Connected Components
+# 8. Connected Components with DFS/BFS for both directed and undirect graphs!
 ###############################################################
 
 # global structures for this exercise
@@ -243,11 +243,28 @@ adj = {0:[1],1:[0],2:[],3:[4],4:[3]}
 visited = [False]*5
 
 def connected_components():
-    # TODO
-    pass
+    connected_components = 0
+    def dfs(node):
+        # Base case, we have already explored this part of the graph or the total subgraph
+        if visited[node]:
+            return 
+ 
+        visited[node] = True
+        for neighbor in adj[node]:
+          dfs(neighbor)
+
+    for node in adj.keys():
+        if not visited[node]:
+            dfs(node)
+            connected_components += 1
+
+    return connected_components
+     
 
 explain_components = """
-TODO
+A connected component is a set of vertices in a graph that are connected to each other.
+A graph can have multiple connected components.
+Inside a component, each vertex is reachable from every other vertex in that component.
 """
 
 # === TESTS ===
