@@ -203,11 +203,19 @@ visited = [False]*n
 order = []
 
 def topo_sort():
-    # TODO
-    pass
+    
 
 explain_toposort = """
-TODO
+We want to sort all the values / nodes of a given graph or tree in some order. Only applicable to DAGs (directed acyclic graph).
+Idea: Repeatedly pick nodes with no incoming edges (no prerequisites), now remove the outgoing edges from these nodes.
+This will lead to new nodes having no incoming edges. Continue until no nodes left.
+"""
+explain_why_topsort_not_possible_with_cycles = """
+Imagine the cycle a -> b -> c -> a that would imply that the order in topolgical sort would have to be a < b but b < a which contraditcs itself.
+"""
+explain_why_topsort_not_possible_with_undirected = """
+Same reason as above, topo sort implies that if a -> b that means a must come before b but in an undirected graph we also have b -> a which 
+leads to another contradiction. 
 """
 
 # === TESTS ===
