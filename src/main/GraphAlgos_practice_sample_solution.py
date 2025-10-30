@@ -193,7 +193,7 @@ state = [0]*3
 print("TEST DIRECTED CYCLE:", has_cycle_directed(0)==True)
 
 ###############################################################
-# 7. Topological Sort
+# 7. Topological Sort (with BFS)
 ###############################################################
 
 # global structures for this exercise
@@ -203,7 +203,18 @@ visited = [False]*n
 order = []
 
 def topo_sort():
-    
+    queue = deque()
+    queue.append(0)
+
+    while queue:
+        node = queue.popleft()
+        visited[node] = True
+        
+        order.append(node)
+        for neighbor in adj[node]:
+            if not visited[neighbor]:
+                queue.append(neighbor)
+      
 
 explain_toposort = """
 We want to sort all the values / nodes of a given graph or tree in some order. Only applicable to DAGs (directed acyclic graph).
