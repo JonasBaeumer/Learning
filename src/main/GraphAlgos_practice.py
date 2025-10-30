@@ -32,7 +32,7 @@ print("TEST 2 UNDIRECTED:", build_adj_undirected(3, []) == {
 ###############################################################
 
 def build_adj_directed(n, edges):
-    adj = {i: [] for i in range(n)]
+    adj = {i: [] for i in range(n)}
     # TODO: fill in
     return adj
 
