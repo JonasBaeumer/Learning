@@ -1,3 +1,23 @@
+# Optimized approach: We can use memoization which allows us to store results of a subproblem
+# we have already seen before so we dont need to explore the same subproblem space multiple times
+# Spacecomplexity: O(n) we only exlore each state once
+# Runtime: O(n), n the number of subproblems since we keep them in cache
+from functools import cache
+
+class Solution:
+    
+    def climbStairs(self, n: int) -> int:
+
+        @cache
+        def dfs(i):
+            # Python evaluates this bool as either 0 or 1 which inexplicitly
+            # models the two base decisions where we either hit 0 or overshoot
+            if (i <= 0):
+                return i == 0
+            return dfs(i-1) + dfs(i-2)
+
+        return dfs(n)
+
 # Approach: We are exploring our solution space with two possible steps, for each level
 # we can either step down one stair or two stairs at once.
 # Runtime: O(2^n)
