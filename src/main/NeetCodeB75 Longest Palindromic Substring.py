@@ -1,7 +1,12 @@
+# Runtime: O(n^3) - we can have up to n^2 substrings, and palindrome check takes O(n)
+# Space: O(n) - depth of recursion stack
+# Problem: Our palindrome check gives us an extra O(n) runtime, so we end up with O(n^3)
+
 from functools import cache
 
 class Solution:
 
+    """ Helper function to check wether given string is palindrome"""
     def palindrome(self, s: str) -> bool:
         return s == s[::-1]
 
