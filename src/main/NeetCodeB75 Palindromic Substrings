@@ -1,5 +1,5 @@
 # Runtime: O(n^2), list of possible combinations of all characters
-# Spacetime: O(1)
+# Spacetime: O(n), because we keep it in list
 
 class Solution:
     def countSubstrings(self, s: str) -> int:
