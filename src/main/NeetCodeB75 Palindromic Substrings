@@ -1,0 +1,23 @@
+# Runtime: O(n^2), list of possible combinations of all characters
+# Spacetime: O(1)
+
+class Solution:
+    def countSubstrings(self, s: str) -> int:
+        substrings = []
+
+        for i in range(len(s)):
+            # Odd numbers
+            l, r = i, i
+            while( l >= 0 and r < len(s) and s[l] == s[r]):
+                substrings.append(s[l:r+1])
+                l -= 1
+                r += 1
+
+            # Even numbers
+            l, r = i, i + 1
+            while( l >= 0 and r < len(s) and s[l] == s[r]):
+                substrings.append(s[l:r+1])
+                l -= 1
+                r += 1
+
+        return len(substrings)
