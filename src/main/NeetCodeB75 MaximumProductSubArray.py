@@ -1,3 +1,5 @@
+
+
 # Why this solution fails, we have to be careful with positive and negative numbers and how they switch when being multiplied.
 # Suddendly the smallest number multiplied with - can become the biggest and vice versa, therefore in the recursion we are 
 # loosing information when this happens since we only look at max not min. Therefore we need to track two solutions at once here. 
