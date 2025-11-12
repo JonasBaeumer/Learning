@@ -1,5 +1,5 @@
-# Runtime: O(2^n), n number of states because we branch of 2 times per number
-# Space: O(n), recursive stack depth
+# Runtime: O(n), each substring is computed once due to memoization
+# Space: O(n), recursive stack depth + cache storage
 
 from functools import cache
 
