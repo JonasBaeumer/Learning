@@ -1,5 +1,8 @@
 from functools import cache
 
+# Runtime: O(n), n number of houses
+# Space: O(n), n recursion stack depth
+
 class Solution:
     def rob(self, nums: List[int]) -> int:
 
