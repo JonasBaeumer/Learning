@@ -1,3 +1,24 @@
+# Recursive version of optimized loop
+
+def find_total_job_time(jobs, job_id):
+
+    # Build up the adj list of format job_id: (time, children)
+    adj_list = {job[0]: (job[1],job[2]) for job in jobs}
+    
+    def dfs(index):
+        
+        total = adj_list[index][0] 
+        for children in adj_list[index][1]:
+            total += dfs(children)
+        
+        return total
+
+    return dfs(job_id)
+
+print(find_total_job_time(jobs, 1))  # 30 + (10+20) + 60 = 120
+print(find_total_job_time(jobs, 2))  # 10 + 20 = 30
+print(find_total_job_time(jobs, 4))  # 60
+
 # Given an array describing jobs in a build system and a job ID,
 # determine the total time required to complete this job.
 
