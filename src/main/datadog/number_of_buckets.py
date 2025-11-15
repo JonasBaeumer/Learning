@@ -1,3 +1,24 @@
+# Runtime: O(n), we directly calculate the position where the bucket should be placed
+# Spacetime: O(k)
+
+def calc_buckets(latencies, number_of_buckets, bucket_width):
+    
+    # Build the number of buckets
+    buckets = [0 for i in range(number_of_buckets)]
+
+    # Loop over latencies
+    for latency in latencies: 
+
+        max_bucket_start = (number_of_buckets - 1) * bucket_width
+        index_to_put = int(latency / bucket_width)
+
+        if latency >= max_bucket_start:
+            buckets[number_of_buckets - 1] += 1
+        else:
+            buckets[index_to_put] += 1
+    
+    return buckets
+
 """
 Question:
 Given:
