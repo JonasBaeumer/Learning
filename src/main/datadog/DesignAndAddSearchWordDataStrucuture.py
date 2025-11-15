@@ -8,6 +8,8 @@ class WordDictionary:
     def __init__(self):
         self.root = TrieNode() 
 
+    # Runtime: O(k) no branching just the length of the word is the number of steps we need to do inside the tree
+    # Spacetime: O(1) 
     def addWord(self, word: str) -> None:
         # Check if word in TrieNode
         node = self.root
@@ -17,6 +19,8 @@ class WordDictionary:
             node = node.children[character]
         node.is_end = True
 
+    # Runtime: O(26 ^ k), k number of dots in the search query because this is where we need to branch
+    # Spacetime: O(1)
     def search(self, word: str) -> bool:
         
         def dfs(node, i):
