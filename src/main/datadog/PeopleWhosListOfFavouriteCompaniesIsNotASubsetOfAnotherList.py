@@ -1,5 +1,27 @@
 class Solution:
 
+    # Runtime: O(n^2 * k)
+    # Spacetime: O(n)
+    def peopleIndexes(self, favoriteCompanies: List[List[str]]) -> List[int]:
+
+        # Convert lists to sets (fast subset checking)
+        sets = [set(lst) for lst in favoriteCompanies]
+        n = len(sets)
+
+        excluded = set()
+
+        for i in range(n):
+            for j in range(n):
+                if i == j:
+                    continue
+                if sets[i].issubset(sets[j]):
+                    excluded.add(i)
+                    break
+
+        return [i for i in range(n) if i not in excluded]
+
+class Solution:
+
     def isSubset(self, a, b):
         for x in a:
             if x not in b:
