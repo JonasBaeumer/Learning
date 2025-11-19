@@ -1,5 +1,5 @@
 # Runtime: O(n), n length of the word we are looking up
-# Space: O(26 * n), n length of the longest word
+# Space: O(26 * n), n length of the longest word (for the whole tree in the word case)
 
 class Trie:
 
@@ -10,7 +10,8 @@ class Trie:
         # Example: 'dog', search('do') should return false
         self.is_end = False
         
-
+    # Space: O(k), k length of the word
+    # Runtime: O(k), k length of the word
     def insert(self, word: str) -> None:
         if not word:
             self.is_end = True
@@ -23,7 +24,8 @@ class Trie:
 
         self.children[first].insert(word[1:])
         
-
+    # Space: O(k), k length of the word
+    # Runtime: O(k), k length of the word
     def search(self, word: str) -> bool:
         # Traverse the tree to find if the word is there
         if not word:
@@ -37,7 +39,8 @@ class Trie:
             return self.children[first].search(word[1:])
         return False
         
-
+    # Space: O(k), k length of the word
+    # Runtime: O(k), k length of the word
     def startsWith(self, prefix: str) -> bool:
         # Traverse the tree to find if the word is there
         if not prefix:
