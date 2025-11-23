@@ -18,6 +18,9 @@ Building up the datastructure once would take O(n*m) but thats ok as long
 as that is a one time effort. 
 """
 
+# Runtime: O(l) * O(n*m) * O(3^k) = O(l * n * m * 3^k)
+# l number of words, n*m dimensions of grid, k length of individual word
+# Space: O(k), k is the recursion stack depth / length of the word
 class Solution:
     def findWords(self, board: List[List[str]], words: List[str]) -> List[str]:
 
@@ -44,16 +47,20 @@ class Solution:
             results.append(dfs(i + 1, j, word[1:], visited_cells))
             results.append(dfs(i, j - 1, word[1:], visited_cells))
             results.append(dfs(i, j + 1, word[1:], visited_cells))
+            # Important: We need to backtrack our cell here to ensure that we 
+            # allow other parts of the exploration to visit it we only wanted to mark 
+            # it for the current path of our exploration
+            visited_cells.pop()
 
             return any(results)
 
         # Go through each of the starting points in our 2D grid and if the 
         # character matches, initialize search from this point
-        found_words = []
+        found_words = set()
         for word in words:  
             for i in range(len(words)):
                 for j in range(len(words)):
                     if dfs(i, j, word, []):
-                        found_words.append(word)
+                        found_words.add(word)
         
-        return found_words
+        return list(found_words)
