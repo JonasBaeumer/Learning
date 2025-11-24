@@ -1,1 +1,1 @@
-# A repository to store all my learning projects
+# A repository to store all my learning project
