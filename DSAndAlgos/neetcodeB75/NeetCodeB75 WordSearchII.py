@@ -1,3 +1,98 @@
+from typing import List
+
+
+class TrieNode:
+    def __init__(self):
+        self.children = {}
+        self.is_end = False      # Marks that a dictionary word ends here
+        self.has_word = False    # Marks that this word was actually found on the board
+
+    def add(self, word: str) -> None:
+        if not word:
+            self.is_end = True
+            return
+        ch = word[0]
+        if ch not in self.children:
+            self.children[ch] = TrieNode()
+        self.children[ch].add(word[1:])
+
+    def find(self, word: str) -> bool:
+        if not word and self.is_end:
+            return True
+        elif not word or word[0] not in self.children:
+            return False
+        return self.children[word[0]].find(word[1:])
+    
+    def find_all_words(self, prefix: str = "") -> List[str]:
+        """
+        Return all words in this trie for which `has_word` is True.
+        """
+        result: List[str] = []
+
+        def dfs(node: "TrieNode", path_chars: List[str]) -> None:
+            # Only record words that were actually found on the board
+            if node.has_word:
+                result.append("".join(path_chars))
+
+            for ch, child in node.children.items():
+                path_chars.append(ch)
+                dfs(child, path_chars)
+                path_chars.pop()
+
+        dfs(self, list(prefix))
+        return result
+        
+
+class Solution:
+    def findWords(self, board: List[List[str]], words: List[str]) -> List[str]:
+        # Build the trie from the word list
+        trie = TrieNode()
+        for word in words:
+            trie.add(word)
+
+        rows, cols = len(board), len(board[0])
+
+        def dfs(i: int, j: int, node: TrieNode) -> None:
+            # Out of bounds
+            if i < 0 or j < 0 or i >= rows or j >= cols:
+                return
+
+            ch = board[i][j]
+
+            # Already visited cell
+            if ch == "#":
+                return
+
+            # This path doesn't exist in the trie
+            if ch not in node.children:
+                return
+
+            next_node = node.children[ch]
+
+            # If this node completes a dictionary word, mark it as found
+            if next_node.is_end:
+                next_node.has_word = True
+
+            # Mark current cell as visited
+            board[i][j] = "#"
+
+            # Explore neighbors
+            dfs(i - 1, j, next_node)
+            dfs(i + 1, j, next_node)
+            dfs(i, j - 1, next_node)
+            dfs(i, j + 1, next_node)
+
+            # Restore the cell (backtrack)
+            board[i][j] = ch
+
+        # Start DFS from every cell on the board
+        for i in range(rows):
+            for j in range(cols):
+                dfs(i, j, trie)
+
+        # Collect all words that were found (has_word == True)
+        return trie.find_all_words()
+
 """
 First thoughts:
 One idea would be to build up the priefix tree once with the grid.
