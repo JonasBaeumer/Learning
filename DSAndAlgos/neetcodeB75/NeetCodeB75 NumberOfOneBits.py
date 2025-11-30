@@ -2,6 +2,16 @@
 # Can we also iterate over a binary array?
 # Runtime: O(k), k number of bits until last 1
 # Spacetime: O(1)
+# Solution with build-int function
+
+class Solution:
+    def hammingWeight(self, n: int) -> int:
+        return bin(n).count('1')
+
+# Naive idea: We get it as a strong and loop over each field and count the 1s
+# Can we also iterate over a binary array?
+# Runtime: O(k), k number of bits until last 1
+# Spacetime: O(1)
 
 class Solution:
     def hammingWeight(self, n: int) -> int:
