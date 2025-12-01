@@ -1,3 +1,6 @@
+# Runtime: O(n) * O(k) number of bits
+# Space: O(n)
+
 class Solution:
     def countBits(self, n: int) -> List[int]:
         bits = []
