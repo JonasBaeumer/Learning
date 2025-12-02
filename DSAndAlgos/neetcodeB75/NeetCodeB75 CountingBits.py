@@ -20,8 +20,28 @@
 # Example: 14 -> 1110 # 13 -> 1101 and now i & (i-1) = 1100 
 # Recursively we could calculate the current bit number by count(i & i-1) + 1
 
+from functools import cache
+
 class Solution:
     def countBits(self, n: int) -> List[int]:
+
+        num_bits = []
+        # Example n = 4
+        print(n) # 0100 -> 4
+        print(n-1) # 0011 -> 3
+        print(n & n-1) # Overlap is 0 so 0000 + 1 means 1 bit
+
+        @cache
+        # This one returns the number of bits for a given number
+        def dfs(n):
+            # Base case number 0
+            if n == 0:
+                return 0
+            return dfs(n & n-1) + 1
+
+        for number in range(n+1):
+            num_bits.append(dfs(number))
+        return num_bits
 
 # Runtime: O(n) * O(k) number of bits
 # Space: O(n)
