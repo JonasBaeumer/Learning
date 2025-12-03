@@ -17,19 +17,29 @@ We have to take into consieration that the number can be multiple times higher t
 Example 578 -> Here we have to take mod 100% to understand the final position where we are going to land
 It doesnt matter how many spins around we have to do since we only care about the final position that we land on
 
+For part II:
+We now have to include all the moments whenever the pointer goes through 0
+For that we can just modify our function to return a tuple that tells us how many times we would have crossed 0
 """
 
-def addSteps(direction, steps, current_pointer) -> int:
+def addSteps(direction, steps, current_pointer) -> (int, int):
+	passed_zero = steps // 100
 	number = steps % 100
 	if direction == "L":
 		result = current_pointer - number
 		if result < 0:
+			if current_pointer != 0:      # don’t count leaving 0 as a hit
+            			passed_zero += 1
 			result = 100 - abs(result)
+		elif result == 0:
+			passed_zero += 1
+			
 	else:
 		result = current_pointer + number
 		if result > 99:
+			passed_zero += 1
 			result -= 100
-	return result
+	return (result, passed_zero)
 
 filepath = "/Users/jonas/Downloads/input.txt"
 	
@@ -41,9 +51,7 @@ with open(filepath, "r") as f:
 		line = line.strip()
 		direction = line[0]
 		steps = int(line[1:len(line)])
-		current_position = addSteps(direction, steps, current_position)
-		if current_position == 0:
-			counter += 1
-
+		current_position, passed_zero = addSteps(direction, steps, current_position)
+		counter += passed_zero
 print(counter)
 
