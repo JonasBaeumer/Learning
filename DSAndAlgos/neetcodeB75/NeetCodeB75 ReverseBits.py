@@ -15,6 +15,8 @@ class Solution:
     if bit 1 add 1 else add 0 to the most right position of new_number
     shift bits of the original number to the right by one position
     """
+    # Runtime: O(32) -> O(1) iterate over all 32 bits once
+    # Space: O(1) -> just need to store the new number
     def reverseBits(self, n: int) -> int:
         reverse_number = 0
         for i in range(32):
