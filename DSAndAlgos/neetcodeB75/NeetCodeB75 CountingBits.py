@@ -22,6 +22,8 @@
 
 from functools import cache
 
+# Runtime: O(n), n number of subproblems since they will be solved only once
+# Spacetime: O(n), n number of subproblems since we store their solutions
 class Solution:
     def countBits(self, n: int) -> List[int]:
 
