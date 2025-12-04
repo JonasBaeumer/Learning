@@ -24,8 +24,25 @@ def check_invalid_id(number: int) -> bool:
 	half = len(s) // 2
 	return s[:half] == s[half:]
 
-print(check_invalid_id(198198))
-print(check_invalid_id(100101))
+def check_invalid_id_part_two(number: int) -> bool:
+	s = str(number)
+	length = len(s)
+	# String must consist of blocks of equal length 
+	for d in range(1, length // 2 + 1):
+		if length % d != 0:
+			continue
+		pattern = s[:d]
+		valid = True
+		for i in range(d, length, d): 
+			if s[i:i+d] != pattern:
+				valid = False
+				break
+		if valid and length // d >= 2:
+			return True
+	return False
+
+print(check_invalid_id_part_two(198198198))
+print(check_invalid_id_part_two(100101))
 
 # Read out intervalls 
 with open(filepath, "r") as f:
@@ -39,7 +56,7 @@ for rang in ranges:
 	left_edge = int(left_string)
 	right_edge = int(right_string)
 	for i in range(left_edge, right_edge + 1):
-		if check_invalid_id(i):
+		if check_invalid_id_part_two(i):
 			result += i
 print(result)
 result = 0
@@ -50,7 +67,7 @@ for rang in ranges:
 	left_edge = int(left_string)
 	right_edge = int(right_string)
 	for i in range(left_edge, right_edge + 1):
-		if check_invalid_id(i):
+		if check_invalid_id_part_two(i):
 			result += i
 print(result)
 
