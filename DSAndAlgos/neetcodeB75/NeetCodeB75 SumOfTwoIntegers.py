@@ -10,6 +10,8 @@ Take most right bit of both numbers
 Check next_bit and do the & operator with both numbers
 Add next_bit to the number continue
 """
+# Runtime: O(1) -> O(32) for bit length
+# Space: O(1) -> just some O(1) variables
 class Solution:
     def getSum(self, a: int, b: int) -> int:
         MASK = 0xffffffff      # 32 bits of 1s
