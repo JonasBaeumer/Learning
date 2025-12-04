@@ -45,3 +45,30 @@ class Solution:
         if number > MAX_INT:
             return number - (1 << 32)
         return number
+
+"""
+Why does this approach not work?
+(1) Firstly, the input can also contain negative numbers. The problem here is that when we shift a negative number, since in python 
+numbers can consist of infinetly many bits and are not fixed size like Java or C, shifting the bits to the right will produce 1s
+instead of 0s. Therefore the bitshift here fails / leads to unwanted side effects. 
+"""
+class Solution:
+    def getSum(self, a: int, b: int) -> int:
+        # Just using 32 bit because I know 32bits covers numbers in the million range
+        # which is more than enough to keep the -1000 - 1000 intervall
+        memory = 0
+        number = 0
+        for i in range(32):
+            bit1 = a & 1 # least significant bit
+            bit2 = b & 1 # least significant bit
+
+            sum_bit = bit1 ^ bit2 ^memory
+            carry_out = (bit1 & bit2) | (memory & (bit1 ^ bit2)) 
+
+            number |= (sum_bit << i)
+            memory = carry_out
+            
+            a >>= 1 # (1) mistake
+            b >>= 1 # (1) mistake
+            
+        return number
