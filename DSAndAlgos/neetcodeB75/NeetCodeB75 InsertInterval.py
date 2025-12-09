@@ -12,34 +12,35 @@ Loop over list (with two pointers):
             1. Appointment can be added before new appointment
             2. Appointment needs to be merged with left 
         If no -> Can just add interval[i] and move on
-
 """
 
+#Runtime: O(n) 
+#Space: O(n) duplicate list not done in place
 class Solution:
     def insert(self, intervals: List[List[int]], newInterval: List[int]) -> List[List[int]]:
-        intervall_processed = False
-        new_list = []
-        i = 0
+        res = []
+        new_start, new_end = newInterval
+        inserted = False
 
-        while i < len(intervals):
-            start, end = intervals[i]
-            # MERGE
-            if start <= newInterval[0] <= end or start <= newInterval[1] <= end:
-                # Find new bounds
-                new_left_bound = min(newInterval[0], start)
-                new_right_bound = max(newInterval[1], end)
-                # If we overlap the last element we added we have to remove it and merge it
-                if len(new_list) != 0:
-                    if new_list[len(new_list)-1][0] <= new_left_bound <= new_list[len(new_list)-1][1]:
-                        new_left_bound = min(new_list[len(new_list)-1][0], new_left_bound)
-                        new_right_bound = max(new_list[len(new_list)-1][1], new_right_bound)
-                        new_list.pop()
-                new_list.append((new_left_bound, new_right_bound))
-            # INSERT
-            elif newInterval[1] < start:
-                new_list.append(newInterval)
-                new_list.append(intervals[i]) 
+        for start, end in intervals:
+            # Case 1: current interval is completely before newInterval (no overlap)
+            if end < new_start:
+                res.append([start, end])
+
+            # Case 2: current interval is completely after newInterval (no overlap)
+            elif start > new_end:
+                if not inserted:
+                    res.append([new_start, new_end])
+                    inserted = True
+                res.append([start, end])
+
+            # Case 3: overlap → merge into newInterval
             else:
-                new_list.append(intervals[i])
-            i += 1
-        return new_list
+                new_start = min(new_start, start)
+                new_end = max(new_end, end)
+
+        # If newInterval goes at the very end and hasn't been inserted yet
+        if not inserted:
+            res.append([new_start, new_end])
+
+        return res
