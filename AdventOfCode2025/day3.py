@@ -18,49 +18,28 @@ def highest_voltage(bank):
 			highest_value = number
 	return (highest_value, second_highest)
 
-def add_and_shift(numbers, value, remaining, k):
-	"""
-	numbers: current chosen digits (as a list of ints), in order
-	value:   new digit (int) from the bank we are considering
-	remaining: how many digits are left AFTER this one in the string
-	k:       target length (here: 12)
-	"""
-	# While:
-	# - we have at least one digit in numbers,
-	# - if we keep the current last digit AND all remaining digits,
-	#   we would still have more than k total → so we are allowed to drop one,
-	# - and the last digit is smaller than the new digit,
-	#   then drop the last digit to make room for a better (bigger) one.
-	while numbers and len(numbers) + remaining > k and numbers[-1] < value:
-		numbers.pop()
-
-	# If we still don't have k digits yet, append this one.
-	if len(numbers) < k:
-		numbers.append(value)
+def add_and_shift(numbers, value):
+	for i in range(len(numbers)):
+		if value >= numbers[i]:
+			tmp = numbers[i]
+			numbers[i] = value
+			value = tmp
+		else:
+			break
 
 	return numbers
 
+print(add_and_shift([2,3,4,2,3,4,2,3,4,2,7,8], 4))
+print(add_and_shift([4,3,4], 6))
+print(add_and_shift([2,3,4,5,1],3))
+
+
 def highest_voltage_2(bank: str) -> int:
-	k = 12
-	numbers = []
-	n = len(bank)
-
-	for i, ch in enumerate(bank):
-		digit = int(ch)
-		remaining = n - i - 1  # digits left *after* this one
-		numbers = add_and_shift(numbers, digit, remaining, k)
-
-		# numbers now holds exactly k digits forming the maximum possible number
+	numbers = list(map(int, bank[-12:]))
+	prefix = bank[:-12]
+	for digit in prefix[::-1]:
+		numbers = add_and_shift(numbers,int(digit))
 	return int("".join(str(d) for d in numbers))
-
-test_string = "987654321111111"
-print(highest_voltage_2(test_string))
-test_string_2 = "811111111111119"
-print(highest_voltage_2(test_string_2))
-test_string_3 = "234234234234278"
-print(highest_voltage_2(test_string_3))
-test_string_4 = "818181911112111"
-print(highest_voltage_2(test_string_4))
 
 filepath = "/Users/jonas/Downloads/input-3.txt"
 total_sum = 0
