@@ -63,6 +63,7 @@ with open(filepath, "r") as f:
 		grid.append(row)
 for i in range(len(grid)):
 	for j in range(len(grid[0])):
-		total_sum += check_adjacent_eight(i,j)
+		if grid[i][j] == '@':
+			total_sum += check_adjacent_eight(i,j)
 print(total_sum)
 #print(grid)
