@@ -27,7 +27,7 @@ def check_field(i, j):
 #print(check_field(-1,-1))
 
 """
-Should return false IF THERE ARE LESS THAN FOUR ROLES IN ADJACENT AREA
+Should return true IF THERE ARE LESS THAN FOUR ROLES IN ADJACENT AREA
 """
 def check_adjacent_eight(i, j):
 	adjacent_roles = 0
@@ -61,9 +61,13 @@ with open(filepath, "r") as f:
 		line = line.strip()
 		row = list(line)
 		grid.append(row)
-for i in range(len(grid)):
-	for j in range(len(grid[0])):
-		if grid[i][j] == '@':
-			total_sum += check_adjacent_eight(i,j)
+
+def staple_organization():
+	for i in range(len(grid)):
+		for j in range(len(grid[0])):
+			if grid[i][j] == '@':
+				if check_adjacent_eight(i,j):
+					total_sum += 1
+				total_sum += check_adjacent_eight(i,j)
 print(total_sum)
 #print(grid)
