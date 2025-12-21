@@ -62,12 +62,22 @@ with open(filepath, "r") as f:
 		row = list(line)
 		grid.append(row)
 
-def staple_organization():
+def staple_organization() -> bool:
+	removed_element = False
+	global total_sum
 	for i in range(len(grid)):
 		for j in range(len(grid[0])):
 			if grid[i][j] == '@':
 				if check_adjacent_eight(i,j):
 					total_sum += 1
-				total_sum += check_adjacent_eight(i,j)
+					grid[i][j] = '.'
+					removed_element = True
+	return removed_element
+
+for i in range(10000):
+	removed_element = staple_organization()
+	if not removed_element:
+		break
+	
 print(total_sum)
 #print(grid)
