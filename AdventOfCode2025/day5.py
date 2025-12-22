@@ -8,6 +8,22 @@ First step: break down the input into the two parts (intervalls, and ingredient 
 Second step: create two datastructures from these blocks
 """
 
+"""
+This method checks wether a given ID is between any intervall in rd_range
+"""
+def check_ingredient_fresh(id: int, id_range: list[(int, int)]) -> bool:
+	for pair in id_range:
+		a,b = pair
+		if id < a:
+			continue
+		if a <= id <= b:
+			return 1
+	return 0
+
+test_range = [(27,273)]
+test_id = 271	
+print(check_ingredient_fresh(test_id, test_range))
+
 id_ranges = []
 ingredient_ids = []
 reached_ingredients = False
@@ -24,6 +40,4 @@ with open(filepath, 'r') as f:
 	block1_lines = blocks[1].splitlines()
 	for line in block1_lines:
 		ingredient_ids.append(int(line.strip()))
-	print(ingredient_ids[0])
-	print(id_ranges[0])
 		
