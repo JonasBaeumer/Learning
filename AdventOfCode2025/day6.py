@@ -44,17 +44,23 @@ ops_array = [
 
 for i in range(len(ops_array[0])):
 	calculation = []
-	numbers = []
+	max_height = max(len(ops_array[row][i]) for row in range(len(ops_array)))
+	numbers = [""] * max_height # stable buffer for this column
 	for j in range(len(ops_array)):
-		offset = len(numbers) - len(ops_array[j][i]) # The length of the offset we need for adding the word
-		for l in range(len(ops_array[j][i])):
-			if l >= (len(numbers) - 1): # The last field contains the operator that must be seperated 
-				numbers.append(ops_array[j][i][l])
+		token = ops_array[j][i]
+		offset = max_height - len(token)
+		for l, ch in enumerate(token):
+			if ch == '+':
+				numbers.append('+')
+			elif ch == '*':
+				numbers.append('*')
 			else:
-				numbers[l + offset] += ops_array[j][i][l]
+				numbers[offset + l] += ch
+		
 		print(numbers)
-		#calculation.append(ops_array[j][i])
-	print(calculation)
-	#result += part_one(calculation)
-#print(result)
+	calculation = numbers
+	numbers = []
+	print(part_one(calculation))
+	result += part_one(calculation)
+print(result)
 #print(ops_array[len(ops_array)-1])
