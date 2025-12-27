@@ -41,24 +41,23 @@ ops_array = [
 	['6', '98', '215', '314'],
 	['*', '+', '*', '+']
 ]
+num_rows = len(ops_array)
+num_cols = len(ops_array[0])
 
-for i in range(len(ops_array[0])):
+for i in range(num_cols - 1, -1, -1):
 	calculation = []
-	max_height = max(len(ops_array[row][i]) for row in range(len(ops_array)))
+	max_height = max(len(ops_array[row][i]) for row in range(num_rows - 1))
 	numbers = [""] * max_height # stable buffer for this column
-	for j in range(len(ops_array)):
+	for j in range(num_rows - 1):
 		token = ops_array[j][i]
 		offset = max_height - len(token)
 		for l, ch in enumerate(token):
-			if ch == '+':
-				numbers.append('+')
-			elif ch == '*':
-				numbers.append('*')
-			else:
-				numbers[offset + l] += ch
+			numbers[offset + l] += ch
 		
 		print(numbers)
-	calculation = numbers
+	
+	op = ops_array[num_rows - 1][i]
+	calculation = numbers + [op]
 	numbers = []
 	print(part_one(calculation))
 	result += part_one(calculation)
