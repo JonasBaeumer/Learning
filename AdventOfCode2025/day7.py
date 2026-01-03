@@ -42,10 +42,10 @@ def simulate_beams(diagram: list[list[str]]) -> (int, list[list[str]]):
 				# We check is space above has beam:
 				if i > 0 and diagram[i-1][j] == '|':
 					# If yes change field to beam to pass it down
-					diagram[i][j] == '|'
+					diagram[i][j] = '|'
 			# Remember to check for S (start point in first row)
 			if i == 0 and diagram[i][j] == 'S':
-				diagram[i][j] == '|'
+				diagram[i][j] = '|'
 			# If beam: Nothing
 
 	return (beam_counter,diagram)
@@ -59,6 +59,6 @@ with open(filepath, 'r') as file:
 		diagram.append(list(line.strip()))
 
 result, diagram = simulate_beams(diagram)
-print(result)
+print(diagram)
 	
 
