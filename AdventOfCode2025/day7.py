@@ -50,7 +50,39 @@ def simulate_beams(diagram: list[list[str]]) -> (int, list[list[str]]):
 
 	return (beam_counter,diagram)
 	
+# Part 2: Explore all possible options
+"""
+Idea: I can use the diagram for part I as the base map of all possible scenarios / paths 
+from particles through the space. Now I just need to start from the top and count all 
+possible paths to the end. Essentially a recursive dfs search through the "tree". 
 
+Essentially we have a splitt whenever we hit a splitter branch ('^') as we can then decide to go
+either left or right (e.g. two decisions).
+
+What is our base case? When we have reached the end of the diagram with our beam / we would 
+step out of bounds so then we return 1 (to signal that we have hit the end of the path). For 
+the internal dfs method we give the starting point i,j for the diagram as input and go downwards
+from there. 
+"""
+
+from 
+
+def explore_with_tachyon_manifold(diagram: list[list[str]]) -> int:
+	
+	@cache
+	def dfs(start_x, start_y):
+		# Base case: We have reached out of bounds
+		# Only valid if we step out of bounds at bottom not left/right
+		if start_y < 0 or start_y >= len(diagram[0]):
+			return 0 # -> We stepped out of bounds to the side
+		# We have reached the bottom end of the diagram
+		if start_x >= len(diagram):
+			return 1
+		# Continue basic exploration since we are not done
+		# check if our field is a splitter
+			# if yes splitt search recursively to left and right 
+		# check if our field is beam
+			# continue search directly below
 
 filepath = '/Users/jonas/Downloads/input-7.txt'
 diagram = []
