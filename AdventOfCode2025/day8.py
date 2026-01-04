@@ -5,6 +5,11 @@ The problem requires careful consideration of data structures, in particular we 
 look up if specific pairs are already part of a respective circuit
 """
 
+import math
+# Helper function to calculate the Euclidean distance for 3d points:
+def euclidean_distance(a, b): (int, int, int), (int, int, int) -> int:
+	return math.dist(a, b)
+
 """
 Approach: 
 Since we only have approx 1000 data points, we can brute force compute all of our distances. While doing so we keep a max heap of 1000
@@ -19,6 +24,8 @@ For the first 1000 distance we directly push them into the tree.
 	
 
 """
+Euclidean distance with 3d points: sqrt( (x1-x2)^2 + (y1-y2)^2 + (z1-z2)^2 )
+
 """
 #def union_merge():
 
