@@ -72,4 +72,24 @@ with open(filepath, "r") as file:
 		coordinates = list(map(lambda x: int(x), coordinates))
 		datapoints.append((coordinates[0], coordinates[1], coordinates[2]))
 
-print(find_1000_shortest_pairs(datapoints))
+point_index = {p: i for i, p in enumerate(datapoints)}
+shortest_pairs = find_1000_shortest_pairs(datapoints)
+
+uf = UnionFind(len(datapoints))
+
+for dist, p1, p2 in shortest_pairs:
+	i = point_index[p1]
+	j = point_index[p2]
+	uf.union(i, j)
+
+from collections import Counter
+
+component_sizes = Counter()
+
+for i in range(len(datapoints)):
+	root = uf.find(i)
+	component_sizes[root] += 1
+
+sizes = sorted(component_sizes.values(), reverse=True)
+answer = sizes[0] * sizes[1] * sizes[2]
+print(answer)
