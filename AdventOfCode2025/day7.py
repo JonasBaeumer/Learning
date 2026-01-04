@@ -65,12 +65,13 @@ the internal dfs method we give the starting point i,j for the diagram as input 
 from there. 
 """
 
-from 
+from functools import cache
 
 def explore_with_tachyon_manifold(diagram: list[list[str]]) -> int:
 	
 	@cache
-	def dfs(start_x, start_y):
+	def dfs(start_x, start_y) -> int:
+		result = 0
 		# Base case: We have reached out of bounds
 		# Only valid if we step out of bounds at bottom not left/right
 		if start_y < 0 or start_y >= len(diagram[0]):
@@ -80,9 +81,16 @@ def explore_with_tachyon_manifold(diagram: list[list[str]]) -> int:
 			return 1
 		# Continue basic exploration since we are not done
 		# check if our field is a splitter
-			# if yes splitt search recursively to left and right 
+		if diagram[start_x][start_y] == '^':
+			# Branch off to the left
+			result += dfs(start_x, start_y - 1)
+			# Branch off to the right
+			result += dfs(start_x, start_y + 1)
 		# check if our field is beam
+		elif diagram[start_x][start_y] == '|':
 			# continue search directly below
+			result += dfs(start_x + 1, start_y)
+		return result
 
 filepath = '/Users/jonas/Downloads/input-7.txt'
 diagram = []
