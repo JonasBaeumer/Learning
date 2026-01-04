@@ -42,95 +42,71 @@ with open(filepath, "r") as f:
 	for line in f:
 		ops_array.append(line.rstrip("\n"))
 
-def get_chunk_widths_from_ops_row(ops_row: str):
-	"""
-	Returns a list of chunk widths, one per problem, based on the operator row.
-	Each chunk width includes the trailing spacing up to (but not including) the next operator.
-	"""
-	ops_positions = [i for i, ch in enumerate(ops_row) if ch in ('+', '*')]
-	widths = []
-	for idx in range(len(ops_positions)):
-		start = ops_positions[idx]
-		end = ops_positions[idx + 1] if idx + 1 < len(ops_positions) else len(ops_row)
-		widths.append(end - start)
-	return widths, ops_positions
+def build_problem_spans_from_ops_row(ops_row: str, sep_min=2):
+	spans = []
+	n = len(ops_row)
+	i = 0
+
+	while i < n:
+	# 1) Skip separator runs (2+ spaces)
+		if ops_row[i] == ' ':
+			j = i
+			while j < n and ops_row[j] == ' ':
+				j += 1
+			if (j - i) >= sep_min:
+				i = j
+				continue
+			# else: single space -> treat as inside a chunk (fall through)
+
+		# 2) Start a chunk
+		start = i
+
+		# 3) Advance until we hit the next separator run (2+ spaces) or end
+		while i < n:
+			if ops_row[i] == ' ':
+				j = i
+				while j < n and ops_row[j] == ' ':
+					j += 1
+				if (j - i) >= sep_min:
+					break
+			i += 1
+
+		end = i
+		spans.append((start, end))
+
+	return spans
+
+distances = []
+counter = 0
+for i in range(len(ops_array[4])):
+	if ops_array[4][i] != ' ':
+		distances.append(counter) 
+		counter = 0
+	else:
+		counter += 1	
 
 
-def split_line_into_chunks(line: str, ops_positions, widths, total_len):
-	"""
-	Splits one full row-string into fixed-width chunks aligned to operator positions.
-	Keeps internal spaces (important for subcolumns).
-	"""
-	line = line.rstrip("\n").ljust(total_len)
+
+# Now get break our string apart and seperate them based on the actual length of the column 
+def split_row(s: str):
+	# pad to same width as operator row so slicing never OOB
+	if len(s) < len(ops_array[4]):
+		s = s.ljust(len(ops_array[4]))
+
 	chunks = []
-	for start, w in zip(ops_positions, widths):
-		chunks.append(line[start:start + w])
+	for start, end in spans:
+		chunk = s[start:end]          # keep internal spaces (subcolumn alignment)
+		chunks.append(chunk)
 	return chunks
 
-
-def build_calculation_from_problem_chunks(problem_chunks, op, right_to_left=True):
-	"""
-	problem_chunks: list[str] of the SAME problem chunk across rows (numbers rows only, no operator row)
-	op: '+' or '*'
-	Returns: list like ['4', '431', '623', '+'] (order depends on right_to_left)
-	"""
-	if not problem_chunks:
-		return [op]
-
-	h = len(problem_chunks)              # number of number-rows
-	w = max(len(r) for r in problem_chunks)
-
-	# pad each row in this chunk so column indexing is safe
-	rows = [r.ljust(w) for r in problem_chunks]
-
-	col_range = range(w - 1, -1, -1) if right_to_left else range(w)
-
-	numbers = []
-	for c in col_range:
-		digits = []
-		for r in range(h):
-			ch = rows[r][c]
-			if ch != ' ':
-				digits.append(ch)
-		if digits:  # ignore empty subcolumns
-			numbers.append("".join(digits))
-
-	return numbers + [op]
+spans = build_problem_spans_from_ops_row(ops_array[4], sep_min=2)
+print(spans)
+print(len(ops_array[0]), len(ops_array[4]))
+#chunked = [split_row(row) for row in ops_array]
+#for i in range(10):
+#print(chunked[0])
 
 
-def parse_worksheet(ops_array):
-	"""
-	ops_array: list[str] of all rows in the worksheet (last row is operator row).
-	Returns: list of calculations, each calculation is a list[str] like ['4','431','623','+']
-	"""
-	ops_row = ops_array[-1]
-	widths, ops_positions = get_chunk_widths_from_ops_row(ops_row)
-	total_len = len(ops_row)
-
-	# chunk every row
-	chunked_rows = [
-		split_line_into_chunks(row, ops_positions, widths, total_len)
-		for row in ops_array
-	]
-
-	num_rows = len(ops_array) - 1
-	num_problems = len(widths)
-
-	calculations = []
-	for p in range(num_problems):
-		op = chunked_rows[-1][p].strip()   # chunk contains spaces, operator is the non-space char
-		problem_chunks = [chunked_rows[r][p] for r in range(num_rows)]
-		calc = build_calculation_from_problem_chunks(problem_chunks, op, right_to_left=True)
-		calculations.append(calc)
-
-	return calculations
-
-calculations = parse_worksheet(ops_array)
-
-result = 0
-for calc in calculations:
-	result += part_one(calc)
-print(result)
 		
 
 
