@@ -71,7 +71,6 @@ def explore_with_tachyon_manifold(diagram: list[list[str]]) -> int:
 	
 	@cache
 	def dfs(start_x, start_y) -> int:
-		result = 0
 		# Base case: We have reached out of bounds
 		# Only valid if we step out of bounds at bottom not left/right
 		if start_y < 0 or start_y >= len(diagram[0]):
@@ -82,15 +81,17 @@ def explore_with_tachyon_manifold(diagram: list[list[str]]) -> int:
 		# Continue basic exploration since we are not done
 		# check if our field is a splitter
 		if diagram[start_x][start_y] == '^':
-			# Branch off to the left
-			result += dfs(start_x, start_y - 1)
-			# Branch off to the right
-			result += dfs(start_x, start_y + 1)
+			# Branch off to the left and right
+			return dfs(start_x + 1, start_y - 1) + dfs(start_x + 1, start_y + 1)
 		# check if our field is beam
 		elif diagram[start_x][start_y] == '|':
 			# continue search directly below
-			result += dfs(start_x + 1, start_y)
-		return result
+			return dfs(start_x + 1, start_y)
+
+	# find starting point for our search
+	for index in range(len(diagram[0])):
+		if diagram[0][index] == '|':
+			return dfs(0, index)
 
 filepath = '/Users/jonas/Downloads/input-7.txt'
 diagram = []
@@ -99,6 +100,7 @@ with open(filepath, 'r') as file:
 		diagram.append(list(line.strip()))
 
 result, diagram = simulate_beams(diagram)
-print(diagram)
+
+print(explore_with_tachyon_manifold(diagram))
 	
 
