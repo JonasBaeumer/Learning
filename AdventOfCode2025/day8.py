@@ -25,9 +25,9 @@ def find_all_shortest_pairs(points: list(tuple[int, int, int])) -> list[(tuple[i
 	heap = []
 	for i in range(len(points)):
 		for j in range(i + 1, len(points)):
-			distance = euclidean_distance(points[i], points[j])
-			heapq.heappush(heap, (-distance, points[i], points[j]))
-	return [(-neg_d, a, b) for (neg_d, a, b) in heap]
+			d = euclidean_distance(points[i], points[j])
+			heapq.heappush(heap, (d, i, j))  # min-heap by d
+	return heap
 
 """
 Union find class to manager cluster merging and tracking in efficient time
@@ -71,28 +71,17 @@ with open(filepath, "r") as file:
 point_index = {p: i for i, p in enumerate(datapoints)}
 shortest_pairs = find_all_shortest_pairs(datapoints)
 
+heap = find_all_shortest_pairs(datapoints)
+
 uf = UnionFind(len(datapoints))
+number_of_circuits = len(datapoints)
 last_merge = None
 
-number_of_circuits = len(datapoints)
-for dist, p1, p2 in shortest_pairs:
-	i = point_index[p1]
-	j = point_index[p2]
-	if uf.find(j) != uf.find(j):
+while heap and number_of_circuits > 1:
+	dist, i, j = heapq.heappop(heap)  # always next closest
+	if uf.find(i) != uf.find(j):
+		uf.union(i, j)
 		number_of_circuits -= 1
 		last_merge = (i, j)
-		uf.union(i, j)
-		if number_of_circuits == 1:
-			break
+
 print(datapoints[last_merge[0]][0] * datapoints[last_merge[1]][0])
-from collections import Counter
-
-component_sizes = Counter()
-
-for i in range(len(datapoints)):
-	root = uf.find(i)
-	component_sizes[root] += 1
-
-sizes = sorted(component_sizes.values(), reverse=True)
-answer = sizes[0] * sizes[1] * sizes[2]
-print(answer)
