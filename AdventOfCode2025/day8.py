@@ -21,20 +21,16 @@ For the first 1000 distance we directly push them into the tree.
 """
 import heapq
 
-def find_1000_shortest_pairs(points: list(tuple[int, int, int])) -> list[(tuple[int, int, int], tuple[int, int, int])]:
+def find_all_shortest_pairs(points: list(tuple[int, int, int])) -> list[(tuple[int, int, int], tuple[int, int, int])]:
 	heap = []
 	for i in range(len(points)):
 		for j in range(i + 1, len(points)):
 			distance = euclidean_distance(points[i], points[j])
-			# while we have less than 1000 distances stored we always add
-			if len(heap) < 1000:
-				heapq.heappush(heap, (-distance, points[i], points[j]))
-			else:
-				if distance < -heap[0][0]:
-					heapq.heapreplace(heap, (-distance, points[i], points[j]))
+			heapq.heappush(heap, (-distance, points[i], points[j]))
 	return [(-neg_d, a, b) for (neg_d, a, b) in heap]
 
 """
+Union find class to manager cluster merging and tracking in efficient time
 """
 class UnionFind:
 	def __init__(self, n):
@@ -73,15 +69,22 @@ with open(filepath, "r") as file:
 		datapoints.append((coordinates[0], coordinates[1], coordinates[2]))
 
 point_index = {p: i for i, p in enumerate(datapoints)}
-shortest_pairs = find_1000_shortest_pairs(datapoints)
+shortest_pairs = find_all_shortest_pairs(datapoints)
 
 uf = UnionFind(len(datapoints))
+last_merge = None
 
+number_of_circuits = len(datapoints)
 for dist, p1, p2 in shortest_pairs:
+	if uf.find(p1) != uf.find(p2):
+		number_of_circuits -= 1
+		last_merge = (p1, p2)
 	i = point_index[p1]
 	j = point_index[p2]
 	uf.union(i, j)
-
+	if number_of_circuits == 1:
+		break
+print(last_merge[0][0] * last_merge[1][0])
 from collections import Counter
 
 component_sizes = Counter()
