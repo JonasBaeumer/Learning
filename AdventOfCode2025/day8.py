@@ -79,12 +79,12 @@ for dist, p1, p2 in shortest_pairs:
 	i = point_index[p1]
 	j = point_index[p2]
 	if uf.find(j) != uf.find(j):
-                number_of_circuits -= 1
-                last_merge = (i, j)
+		number_of_circuits -= 1
+		last_merge = (i, j)
 		uf.union(i, j)
 		if number_of_circuits == 1:
 			break
-print(last_merge[0][0] * last_merge[1][0])
+print(datapoints[last_merge[0]][0] * datapoints[last_merge[1]][0])
 from collections import Counter
 
 component_sizes = Counter()
