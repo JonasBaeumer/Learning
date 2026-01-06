@@ -5,7 +5,7 @@ We then keep the max value.
 Question: How do I calculate the surface of a rectangle using two points?
 """
 
-def calculate_surface(point_a: tuple[int, int], point_b: tuple[int, int]) -> int
+def calculate_surface(point_a: tuple[int, int], point_b: tuple[int, int]) -> int:
 	# First we need to calculate point_c and point_d
 
 	# And then we can calculate the length of two adjacent edges and when we then calculate a * b
@@ -13,9 +13,16 @@ def calculate_surface(point_a: tuple[int, int], point_b: tuple[int, int]) -> int
 	# width  = |x2 - x1|
         # height = |y2 - y1|
         # area = |x2 - x1| * |y2 - y1|
-        width = abs(
+	width = abs(point_b[0] - point_a[0]) + 1
+	height = abs(point_b[1] - point_a[1]) + 1
+	return width * height
 
 def find_max_rectangle(tiles: list(tuple[int, int])) -> int:
+	max_value = 0
+	for i in range(len(tiles)):
+		for j in range(i+1, len(tiles)):
+			max_value = max(max_value, calculate_surface(tiles[i], tiles[j]))
+	return max_value
 
 
 tiles = []
@@ -24,4 +31,4 @@ with open(filepath, "r") as file:
 	for line in file:
 		coordinates = line.strip().split(',')
 		tiles.append((int(coordinates[0]), int(coordinates[1])))
-print(tiles)
+print(find_max_rectangle(tiles))
