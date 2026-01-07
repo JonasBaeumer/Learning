@@ -58,6 +58,7 @@ Important since we can not assume the relative position of the actual edges we a
 otherwise our border could be for example through the center (like an X) between the edges.
 """
 def find_valid_rectangle_candidates(red_points: list(tuple[int, int]), green_points: set[tuple[int, int]]) -> list(tuple[int, int]):
+	valid_rectangles = []
 	for i in range(len(red_points)):
 		for j in range(i + 1, len(red_points)):
 			a_x, a_y = red_points[i]
@@ -74,12 +75,39 @@ def find_valid_rectangle_candidates(red_points: list(tuple[int, int]), green_poi
 			d = (x2, y2) # top right
 
 			# Now check for each of these points that all the outer borders have green points connected
+			valid_rectangle = True			
 			# A -> D
+			for x in range(a[0], d[0] + 1):
+				if (x, a[1]) not in green_points:
+					valid_rectangle = False
+					break
 			# D -> B
-			# B -> C
+			if valid_rectangle:
+				for y in range(d[1], b[1] -1, -1):
+					if (d[0], y) not in green_points:
+						valid_rectangle = False
+						break
+			# B -> C 
+			if valid_rectangle:
+				for x in range(b[0], c[0] -1, -1):
+					if (x, b[1]) not in green_points:
+						valid_rectangle = False
+						break
 			# C -> A
-	
+			if valid_rectangle:
+				for y in range(c[1], a[1] + 1):
+					if (c[0], y) not in green_points:
+						valid_rectangle = False
+						break
+			if valid_rectangle:
+				valid_rectangles.append((red_points[i], red_points[j]))	
+	return valid_rectangles
 
+"""
+This method goes through the list of points and builds up out green_points set in combination with add_green_points()
+"""
+def find_green_points(red_points: list(tuple[int, int]), green_points: set[tuple[int, int]]) -> set[tuple[int, int]]:
+	
 
 red_tiles = []
 filepath = '/Users/jonas/Downloads/input-9.txt'
@@ -87,4 +115,5 @@ with open(filepath, "r") as file:
 	for line in file:
 		coordinates = line.strip().split(',')
 		red_tiles.append((int(coordinates[0]), int(coordinates[1])))
+green_points = 
 print(find_max_rectangle(red_tiles))
