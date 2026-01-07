@@ -119,5 +119,8 @@ with open(filepath, "r") as file:
 	for line in file:
 		coordinates = line.strip().split(',')
 		red_tiles.append((int(coordinates[0]), int(coordinates[1])))
-green_points = 
-print(find_max_rectangle(red_tiles))
+green_points = Set()
+green_points = find_green_points(red_points, green_points)
+#def find_valid_rectangle_candidates(red_points: list(tuple[int, int]), green_points: set[tuple[int, int]]) -> list(tuple[int, int]):
+max_rectangle_candidates = find_valid_rectangle_candidates(red_tiles, green_points)
+print(find_max_rectangles(max_rectangle_candidates))
