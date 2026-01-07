@@ -35,6 +35,22 @@ def find_max_rectangle(tiles: list(tuple[int, int])) -> int:
 		for j in range(i+1, len(tiles)):
 			max_value = max(max_value, calculate_surface(tiles[i], tiles[j]))
 	return max_value
+"""
+This method that all points in a straight line between two points to the set. Important we also include the actual original points 
+not just the space in between them (so this is inclusive)
+"""
+def add_green_points(green_points: set[tuple[int, int]], point_a: tuple[int, int], point_b: tuple[int, int]) -> set[tuple[int, int]]:
+	green_points = green_points.copy()
+	a_x, a_y = point_a[0], point_a[1]
+	b_x, b_y = point_b[0], point_b[1]
+	
+	if a_x == b_x: # Add y coordinates
+		for i in range(min(a_y, b_y), max(a_y, b_y) + 1):
+			green_points.add((a_x, i)):
+	else: # Add x coordinates
+		for i in range(min(a_x, b_x), max(a_x, b_x) + 1):
+			green_points.add((i, a_y)):
+	return green_points
 
 
 red_tiles = []
