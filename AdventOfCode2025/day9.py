@@ -107,7 +107,11 @@ def find_valid_rectangle_candidates(red_points: list(tuple[int, int]), green_poi
 This method goes through the list of points and builds up out green_points set in combination with add_green_points()
 """
 def find_green_points(red_points: list(tuple[int, int]), green_points: set[tuple[int, int]]) -> set[tuple[int, int]]:
-	
+	for i in range(0, len(red_points)):
+		a = red_points[i]
+		b = red_points[(i+1) % n]
+		green_points = add_green_points(green_points, a, b)
+	return green_points 
 
 red_tiles = []
 filepath = '/Users/jonas/Downloads/input-9.txt'
