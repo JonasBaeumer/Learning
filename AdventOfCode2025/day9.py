@@ -52,6 +52,34 @@ def add_green_points(green_points: set[tuple[int, int]], point_a: tuple[int, int
 			green_points.add((i, a_y)):
 	return green_points
 
+"""
+This method takes a set of red points and checks wether there is a valid list of greenpoints that forms the edges of this rectangle
+Important since we can not assume the relative position of the actual edges we are looking at we need to normalize the coordinates 
+otherwise our border could be for example through the center (like an X) between the edges.
+"""
+def find_valid_rectangle_candidates(red_points: list(tuple[int, int]), green_points: set[tuple[int, int]]) -> list(tuple[int, int]):
+	for i in range(len(red_points)):
+		for j in range(i + 1, len(red_points)):
+			a_x, a_y = red_points[i]
+			b_x, b_y = red_points[j]
+
+			# A (top-left) - D (top-right) - B (bottom - right) - C (bottom - left)
+			x1 = min(a_x, b_x)
+			x2 = max(a_x, b_x)
+			y1 = min(a_y, b_y)
+			y2 = max(a_y, b_y)
+			a = (x1, y2) # top left
+			b = (x2, y1) # bottom right
+			c = (x1, y1) # Bottom left
+			d = (x2, y2) # top right
+
+			# Now check for each of these points that all the outer borders have green points connected
+			# A -> D
+			# D -> B
+			# B -> C
+			# C -> A
+	
+
 
 red_tiles = []
 filepath = '/Users/jonas/Downloads/input-9.txt'
