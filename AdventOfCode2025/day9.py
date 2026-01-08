@@ -1,126 +1,205 @@
 """
-First idea: We can mathematically calculate the actual size of the rectacle by calculating all combinations of points 
-We then keep the max value.
-
-Question: How do I calculate the surface of a rectangle using two points?
-
-Approach for Part II: The key idea is not that dont always have a valid triangle formed between any arbitrary two points, rather
-we have specific conditions that fill space. Therefore the new approach is the following:
-1) Using the initial list of points in order, we calculate all the green points between them and put them in a set for fast lookup
-	Rule: Every two adjacent points in the list from a valid line in between them. 
-2) When we now want to check which red points would form a valid triangle, we now have to check wether the complete out border 
-of that rectangle is filled with red (or green) points. If yes, then we can deduce the interior is as well and the rectangle 
-is a valid candidate 
-	Open question: How do we identify red points along the line since they are also valid along the line of two red points
-	Proposal: Add the red points to the green point list as well since being red doesnt give us any special advantage when we dont
-	look at the respective points as part of the two opposite red edge points
-3) Go through the list of all candidates and calculate the max surface (similar to part I)
+1. Use coordinate compression to map large coordinates to a smaller grid
+2. Build a 2D grid marking red points and lines between adjacent red points
+3. Use flood fill to mark interior points as green
+4. For rectangle validation, only check the perimeter (not all interior points)
+5. Find the maximum area rectangle
 """
 
-def calculate_surface(point_a: tuple[int, int], point_b: tuple[int, int]) -> int:
-	# First we need to calculate point_c and point_d
+import signal
+import time
 
-	# And then we can calculate the length of two adjacent edges and when we then calculate a * b
-	# and that gives us the total surface or the rectangle
-	# width  = |x2 - x1|
-        # height = |y2 - y1|
-        # area = |x2 - x1| * |y2 - y1|
+class TimeoutError(Exception):
+	pass
+
+def timeout_handler(signum, frame):
+	raise TimeoutError("Operation timed out after 15 seconds")
+
+def unique_sorted(arr):
+	"""Remove duplicates from sorted array"""
+	if not arr:
+		return []
+	result = [arr[0]]
+	for i in range(1, len(arr)):
+		if arr[i] != arr[i-1]:
+			result.append(arr[i])
+	return result
+
+def abs(x):
+	return x if x >= 0 else -x
+
+def calculate_area(point_a: tuple[int, int], point_b: tuple[int, int]) -> int:
+	"""Calculate area of rectangle formed by two opposite corners"""
 	width = abs(point_b[0] - point_a[0]) + 1
 	height = abs(point_b[1] - point_a[1]) + 1
 	return width * height
 
-def find_max_rectangle(tiles: list(tuple[int, int])) -> int:
-	max_value = 0
-	for i in range(len(tiles)):
-		for j in range(i+1, len(tiles)):
-			max_value = max(max_value, calculate_surface(tiles[i], tiles[j]))
-	return max_value
-"""
-This method that all points in a straight line between two points to the set. Important we also include the actual original points 
-not just the space in between them (so this is inclusive)
-"""
-def add_green_points(green_points: set[tuple[int, int]], point_a: tuple[int, int], point_b: tuple[int, int]) -> set[tuple[int, int]]:
-	green_points = green_points.copy()
-	a_x, a_y = point_a[0], point_a[1]
-	b_x, b_y = point_b[0], point_b[1]
+def is_enclosed(a: tuple[int, int], b: tuple[int, int], grid: list[list[str]], 
+                x_map: dict[int, int], y_map: dict[int, int]) -> bool:
+	"""
+	Check if rectangle formed by points a and b is valid.
+	Only checks the perimeter (top/bottom edges and left/right edges).
+	This is O(width + height) instead of O(width * height).
+	"""
+	# Map original coordinates to compressed grid coordinates
+	ax, ay = a
+	bx, by = b
 	
-	if a_x == b_x: # Add y coordinates
-		for i in range(min(a_y, b_y), max(a_y, b_y) + 1):
-			green_points.add((a_x, i)):
-	else: # Add x coordinates
-		for i in range(min(a_x, b_x), max(a_x, b_x) + 1):
-			green_points.add((i, a_y)):
-	return green_points
+	# Get compressed coordinates
+	x1 = min(x_map[ax], x_map[bx])
+	x2 = max(x_map[ax], x_map[bx])
+	y1 = min(y_map[ay], y_map[by])
+	y2 = max(y_map[ay], y_map[by])
+	
+	# Check top and bottom edges
+	for x in range(x1, x2 + 1):
+		if grid[y1][x] == '.' or grid[y2][x] == '.':
+			return False
+	
+	# Check left and right edges
+	for y in range(y1, y2 + 1):
+		if grid[y][x1] == '.' or grid[y][x2] == '.':
+			return False
+	
+	return True
 
-"""
-This method takes a set of red points and checks wether there is a valid list of greenpoints that forms the edges of this rectangle
-Important since we can not assume the relative position of the actual edges we are looking at we need to normalize the coordinates 
-otherwise our border could be for example through the center (like an X) between the edges.
-"""
-def find_valid_rectangle_candidates(red_points: list(tuple[int, int]), green_points: set[tuple[int, int]]) -> list(tuple[int, int]):
-	valid_rectangles = []
-	for i in range(len(red_points)):
-		for j in range(i + 1, len(red_points)):
-			a_x, a_y = red_points[i]
-			b_x, b_y = red_points[j]
+def flood_fill(grid: list[list[str]], start: tuple[int, int]):
+	"""Flood fill to mark interior points as green (X) - uses stack (DFS) like Go version"""
+	stack = [start]
+	directions = [(0, 1), (0, -1), (1, 0), (-1, 0)]
+	
+	while stack:
+		x, y = stack.pop()  # LIFO (stack) to match Go version
+		
+		# Skip if already filled or out of bounds
+		if y < 0 or y >= len(grid) or x < 0 or x >= len(grid[0]):
+			continue
+		if grid[y][x] != '.':
+			continue
+		
+		grid[y][x] = 'X'
+		
+		# Add neighbors
+		for dx, dy in directions:
+			nx, ny = x + dx, y + dy
+			if 0 <= ny < len(grid) and 0 <= nx < len(grid[0]):
+				if grid[ny][nx] == '.':
+					stack.append((nx, ny))
 
-			# A (top-left) - D (top-right) - B (bottom - right) - C (bottom - left)
-			x1 = min(a_x, b_x)
-			x2 = max(a_x, b_x)
-			y1 = min(a_y, b_y)
-			y2 = max(a_y, b_y)
-			a = (x1, y2) # top left
-			b = (x2, y1) # bottom right
-			c = (x1, y1) # Bottom left
-			d = (x2, y2) # top right
+def get_inside_point(grid: list[list[str]]) -> tuple[int, int]:
+	"""
+	Find a point inside the polygon using ray casting.
+	Casts a ray to the left and counts edge crossings.
+	"""
+	for y in range(len(grid)):
+		for x in range(len(grid[0])):
+			if grid[y][x] != '.':
+				continue
+			
+			# Cast ray to the left and count edge crossings
+			hits = 0
+			prev = '.'
+			
+			for i in range(x, -1, -1):
+				cur = grid[y][i]
+				if cur != prev:
+					hits += 1
+				prev = cur
+			
+			# Odd number of crossings means inside
+			if hits % 2 == 1:
+				return (x, y)
+	
+	raise ValueError("No inside point found")
 
-			# Now check for each of these points that all the outer borders have green points connected
-			valid_rectangle = True			
-			# A -> D
-			for x in range(a[0], d[0] + 1):
-				if (x, a[1]) not in green_points:
-					valid_rectangle = False
-					break
-			# D -> B
-			if valid_rectangle:
-				for y in range(d[1], b[1] -1, -1):
-					if (d[0], y) not in green_points:
-						valid_rectangle = False
-						break
-			# B -> C 
-			if valid_rectangle:
-				for x in range(b[0], c[0] -1, -1):
-					if (x, b[1]) not in green_points:
-						valid_rectangle = False
-						break
-			# C -> A
-			if valid_rectangle:
-				for y in range(c[1], a[1] + 1):
-					if (c[0], y) not in green_points:
-						valid_rectangle = False
-						break
-			if valid_rectangle:
-				valid_rectangles.append((red_points[i], red_points[j]))	
-	return valid_rectangles
+# Set up timeout
+signal.signal(signal.SIGALRM, timeout_handler)
+signal.alarm(15)
 
-"""
-This method goes through the list of points and builds up out green_points set in combination with add_green_points()
-"""
-def find_green_points(red_points: list(tuple[int, int]), green_points: set[tuple[int, int]]) -> set[tuple[int, int]]:
-	for i in range(0, len(red_points)):
-		a = red_points[i]
-		b = red_points[(i+1) % n]
-		green_points = add_green_points(green_points, a, b)
-	return green_points 
-
-red_tiles = []
-filepath = '/Users/jonas/Downloads/input-9.txt'
-with open(filepath, "r") as file:
-	for line in file:
-		coordinates = line.strip().split(',')
-		red_tiles.append((int(coordinates[0]), int(coordinates[1])))
-green_points = Set()
-green_points = find_green_points(red_points, green_points)
-#def find_valid_rectangle_candidates(red_points: list(tuple[int, int]), green_points: set[tuple[int, int]]) -> list(tuple[int, int]):
-max_rectangle_candidates = find_valid_rectangle_candidates(red_tiles, green_points)
-print(find_max_rectangles(max_rectangle_candidates))
+try:
+	start_time = time.time()
+	
+	# Read input
+	red_points = []
+	filepath = '/Users/jonas/Downloads/input-9.txt'
+	with open(filepath, "r") as file:
+		for line in file:
+			line = line.strip()
+			if not line:
+				continue
+			coordinates = line.split(',')
+			red_points.append((int(coordinates[0]), int(coordinates[1])))
+	
+	# Coordinate compression: map large coordinates to smaller grid indices
+	all_x = sorted([p[0] for p in red_points])
+	all_y = sorted([p[1] for p in red_points])
+	unique_x = unique_sorted(all_x)
+	unique_y = unique_sorted(all_y)
+	
+	# Create mapping from original coordinates to compressed indices
+	x_map = {x: i for i, x in enumerate(unique_x)}
+	y_map = {y: i for i, y in enumerate(unique_y)}
+	
+	# Create compressed grid
+	grid = [['.' for _ in range(len(unique_x))] for _ in range(len(unique_y))]
+	
+	# Map red points to compressed coordinates and mark them
+	compressed_points = []
+	for orig_point in red_points:
+		cx = x_map[orig_point[0]]
+		cy = y_map[orig_point[1]]
+		grid[cy][cx] = '#'
+		compressed_points.append((cx, cy))
+	
+	# Draw lines between adjacent red points (marking green tiles on the path)
+	for i in range(len(compressed_points)):
+		a = compressed_points[i]
+		b = compressed_points[(i + 1) % len(compressed_points)]
+		
+		if a[0] == b[0]:  # Vertical line
+			y0, y1 = min(a[1], b[1]), max(a[1], b[1])
+			for y in range(y0, y1 + 1):
+				grid[y][a[0]] = '#'
+		elif a[1] == b[1]:  # Horizontal line
+			x0, x1 = min(a[0], b[0]), max(a[0], b[0])
+			for x in range(x0, x1 + 1):
+				grid[a[1]][x] = '#'
+	
+	# Flood fill interior points
+	inside_point = get_inside_point(grid)
+	flood_fill(grid, inside_point)
+	
+	# Find maximum area rectangle
+	max_area = 0
+	n = len(red_points)
+	
+	for i in range(n):
+		# Check timeout periodically
+		if time.time() - start_time > 15:
+			raise TimeoutError("Operation timed out")
+		
+		for j in range(i + 1, n):
+			# Check timeout more frequently for large inputs
+			if (i * n + j) % 10000 == 0 and time.time() - start_time > 15:
+				raise TimeoutError("Operation timed out")
+			
+			if is_enclosed(red_points[i], red_points[j], grid, x_map, y_map):
+				area = calculate_area(red_points[i], red_points[j])
+				if area > max_area:
+					max_area = area
+	
+	print(max_area)
+	
+	# Cancel alarm if we finish successfully
+	signal.alarm(0)
+	
+except TimeoutError as e:
+	signal.alarm(0)
+	print(f"Error: {e}")
+	exit(1)
+except Exception as e:
+	signal.alarm(0)
+	print(f"Error: {e}")
+	import traceback
+	traceback.print_exc()
+	raise
