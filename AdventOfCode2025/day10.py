@@ -89,25 +89,24 @@ def find_shortest_path_to_joltage_state(goal_state: list[int], instructions: lis
 	visited = set()
 	queue = deque()
 
-	queue.append((start_state, 1))
+	queue.append((start_state, 0))
 	while queue:
 		state, index = queue.popleft()
 		state_tuple = tuple(state)
 		if state_tuple in visited:
 			continue
 		visited.add(state_tuple)
+		
+		if state == goal_state:
+			return index
 
 		for instruction in instructions:
 			new_state = _increase_joltage(state, instruction)
 			new_state_tuple = tuple(new_state)
-			if new_state == goal_state:
-				return index
-			else:
-				for any(new_state[i] > goal_state[i] for i in range(len(new_state))):
-					continue 
-				if new_state_tuple not in visited:
-					visited.add(state_tuple)
-					queue.append((new_state, index + 1))
+			if any(new_state[i] > goal_state[i] for i in range(len(new_state))):
+				continue 
+			if new_state_tuple not in visited:
+				queue.append((new_state, index + 1))
 	return -1
 
 
