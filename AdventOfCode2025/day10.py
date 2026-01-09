@@ -44,6 +44,30 @@ test_string = '...'
 print(_flip_string(test_string, [1]))
 print(_flip_string(test_string, [1,2]))
 	
+"""
+Main method to determine the shortest path for a given machine
+"""
+def find_shortest_path_for_machine(goal_state: str, instructions: list[list[int]]):
+	start_state = "." * len(goal_state)
+	visited = set()
+	queue = deque()
+
+	queue.append((start_state, 0))
+	while queue:
+		state, index = queue.popleft()
+		visited.append(state)
+		
+		for instruction in instructions:
+			new_state = _flip_string(state, instruction)
+			if new_state == goal_state:
+				return index
+			else:
+				if new_state not in visited:
+					queue.append(new_state, index + 1)
+	# We couldnt find any working solution to reach the goal state
+	return -1
+	
+print(find_shorte
 
 import re
 filepath = '/Users/jonas/Downloads/input-10.txt'
