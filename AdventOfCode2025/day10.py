@@ -73,13 +73,23 @@ def find_shortest_path_for_machine(goal_state: str, instructions: list[list[int]
 print(find_shortest_path_for_machine("###", [[0], [1], [2]]))
 print(find_shortest_path_for_machine(".###.#", [[0,1,2,3,4], [0,3,4], [0,1,2,4,5], [1,2]]))
 
+def first_part(machines: list[str]):
+	result = 0
+	for machine in machines:
+		result += find_shortest_path_for_machine(machine[0], machine[1])
+	return result
+
 import re
 filepath = '/Users/jonas/Downloads/input-10.txt'
 
+machines = []
 with open(filepath, 'r') as file:
 	for line in file:
 		line.strip()
 		# 1) We have to splitt each line into the proper datastructures by using regex
-		_parse_string(line.strip())
+		machines.append(_parse_string(line.strip()))
+print(machines[0])
+print(len(machines))
+print(first_part(machines))
 		
 		
