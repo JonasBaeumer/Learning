@@ -69,7 +69,36 @@ def find_shortest_path_for_machine(goal_state: str, instructions: list[list[int]
 					queue.append((new_state, index + 1))
 	# We couldnt find any working solution to reach the goal state
 	return -1
-	
+
+def _increase_joltage(joltage: list[int], instruction: list[int]):
+	joltage = joltage 
+	for i in range(len(joltage)):
+		if i in instruction:
+			joltage[i] += 1
+	return joltage
+
+print(_increase_joltage([0,0,0], [0,2]))
+print(_increase_joltage([0,0,0], [0,1]))
+print(_increase_joltage([0,0,0], [2]))
+print(_increase_joltage([0,0,0], [0,1,2]))
+
+"""
+Follow up for part II where we not only now have to hit the final state but hitting it while pressing the right buttons the exact amount of times. 
+"""
+def find_shortest_path_to_joltage_state(goal_state: list[int], instructions: list[list[int]]):
+	start_state = [0] * len(goal_state)
+	visited = set()
+	queue = deque()
+
+	queue.append((start_state, 1))
+	while queue:
+		state, index = queue.popleft()
+		visited.add((state, index))
+
+		#for instruction in instructions:
+	return None
+
+
 print(find_shortest_path_for_machine("###", [[0], [1], [2]]))
 print(find_shortest_path_for_machine(".###.#", [[0,1,2,3,4], [0,3,4], [0,1,2,4,5], [1,2]]))
 
