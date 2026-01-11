@@ -126,6 +126,22 @@ def second_part(machine: list[str]):
 		result += find_shortest_path_to_joltage_state(machine[2], machine[1])
 	return result
 
+"""
+This methods models each button presses and its effects as a matrix for the lp to process
+Worst case runtime: O(n^2)
+"""
+def _tranform_parameters_for_lp(buttons: list[list[int]], length: int)):
+	A = []
+	for row in range(num_counters):
+		A.append([1 if row in button else 0 for button in buttons])
+	return A
+
+import pulp
+def pulp_lp_solver(buttons: list[list[int]], b: list[int]):
+	A = _transform_parameters_for_lp(buttons, len(b))
+	
+
+
 import re
 filepath = '/Users/jonas/Downloads/input-10.txt'
 
@@ -137,5 +153,14 @@ with open(filepath, 'r') as file:
 		machines.append(_parse_string(line.strip()))
 print(machines[0])
 # print(second_part(machines))
+
+test_states = [[2, 3], [0, 3], [1, 3], [0, 1, 3]]
+test_joltage = [34, 24, 10, 51]
+
+"""
+1) Formulate the linear program that we should solve 
+"""
+
+
 		
 		
