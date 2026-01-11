@@ -109,10 +109,8 @@ def find_shortest_path_to_joltage_state(goal_state: list[int], instructions: lis
 				queue.append((new_state, index + 1))
 	return -1
 
-
 print(find_shortest_path_to_joltage_state([1,1,1], [[0], [1], [2]]))
 print(find_shortest_path_to_joltage_state([3,5,4,7], [[3], [1,3], [2], [2,3], [0,2], [0,1]]))
-
 
 
 def first_part(machines: list[str]):
@@ -138,7 +136,6 @@ with open(filepath, 'r') as file:
 		# 1) We have to splitt each line into the proper datastructures by using regex
 		machines.append(_parse_string(line.strip()))
 print(machines[0])
-print(len(machines))
-print(second_part(machines))
+# print(second_part(machines))
 		
 		
