@@ -31,15 +31,16 @@ def find_paths_to_end(graph: dict[str, list[str]]):
 		if not node:
 			return 0
 		# base case: we are running in a cycle and have already seen this element
-		if path in visited:
+		if node in visited:
 			return 0
 		# base case: we have actually found a valid path
-		if node == "end":
+		if node == "out":
 			return 1
 		paths = graph[node]
 		result = 0
+		visited = visited.copy()
 		for path in paths:
-			visited.append(path)
+			visited.append(node)
 			result += dfs(path, visited)
 		return result
 	
@@ -65,5 +66,5 @@ lines = []
 with open(filepath, "r") as file:
 	for line in file:
 		lines.append(line)
-graph = build_graph(lines)
-print(graph)	 
+#graph = build_graph(lines)
+#print(graph)	 
