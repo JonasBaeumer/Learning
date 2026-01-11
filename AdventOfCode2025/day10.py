@@ -139,7 +139,7 @@ def _transform_parameters_for_lp(buttons: list[list[int]], length: int):
 import pulp
 def pulp_lp_solver(buttons: list[list[int]], b: list[int]):
 	A = _transform_parameters_for_lp(buttons, len(b))
-	num_buttons = len(b)
+	num_buttons = len(buttons)
 	
 	# define integer variables, x1...xn
 	x = [pulp.LpVariable(f"x{i}", lowBound=0, cat='Integer') for i in range(num_buttons)]
@@ -161,23 +161,24 @@ def pulp_lp_solver(buttons: list[list[int]], b: list[int]):
 	for var in x:
 		print(var.name, "=", var.value())
 	print("Min presses:", pulp.value(problem.objective))
+	return pulp.value(problem.objective)
 
 import re
 filepath = '/Users/jonas/Downloads/input-10.txt'
 
 machines = []
+result = 0
 with open(filepath, 'r') as file:
 	for line in file:
 		line.strip()
 		# 1) We have to splitt each line into the proper datastructures by using regex
-		machines.append(_parse_string(line.strip()))
-print(machines[0])
-# print(second_part(machines))
+		machine_config = _parse_string(line.strip())
+		machines.append(machine_config)
+		result += pulp_lp_solver(machine_config[1], machine_config[2])
+print(result)
 
 test_states = [[2, 3], [0, 3], [1, 3], [0, 1, 3]]
 test_joltage = [34, 24, 10, 51]
-
-pulp_lp_solver(test_states, test_joltage)
 
 
 		
