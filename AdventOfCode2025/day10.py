@@ -139,8 +139,28 @@ def _tranform_parameters_for_lp(buttons: list[list[int]], length: int)):
 import pulp
 def pulp_lp_solver(buttons: list[list[int]], b: list[int]):
 	A = _transform_parameters_for_lp(buttons, len(b))
+	num_buttons = len(b)
 	
+	# define integer variables, x1...xn
+	x = [pulp.LpVariable(f"x{i}", lowBound=0, cat='Integer') for i in range(num_buttons)]
+	
+	# Define minimization problem
+	problem = pulp.LpProblem("Joltage", pulp.LpMinimize)
 
+	# Add constraints: A*x = b
+	for row in range(len(A)):
+		problem += pulp.lpDot(A[row], x) == b[row]
+
+	# Objective: minimize total presses
+	problem += pulp.lpSum(x)
+	
+	# Solve
+	problem.solve()
+
+	print("Solution:")
+	for var in x:
+		print(var.name, "=", var.value())
+	print("Min presses:", pulp.value(problem.objective))
 
 import re
 filepath = '/Users/jonas/Downloads/input-10.txt'
@@ -157,9 +177,7 @@ print(machines[0])
 test_states = [[2, 3], [0, 3], [1, 3], [0, 1, 3]]
 test_joltage = [34, 24, 10, 51]
 
-"""
-1) Formulate the linear program that we should solve 
-"""
+pulp_lp_solver(test_states, test_joltage)
 
 
 		
