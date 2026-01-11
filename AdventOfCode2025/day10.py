@@ -130,9 +130,9 @@ def second_part(machine: list[str]):
 This methods models each button presses and its effects as a matrix for the lp to process
 Worst case runtime: O(n^2)
 """
-def _tranform_parameters_for_lp(buttons: list[list[int]], length: int)):
+def _transform_parameters_for_lp(buttons: list[list[int]], length: int):
 	A = []
-	for row in range(num_counters):
+	for row in range(length):
 		A.append([1 if row in button else 0 for button in buttons])
 	return A
 
