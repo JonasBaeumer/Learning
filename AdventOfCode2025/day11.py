@@ -24,27 +24,31 @@ def build_graph(paths: list[str]):
 """
 This method traverses the tree and find all the available paths to target with DFS
 """
+from functools import cache
 def find_paths_to_end(graph: dict[str, list[str]]):
-
-	def dfs(node: str, visited: list[str]):
+	
+	@cache	
+	def dfs(node: str, seen_fft: bool, seen_dac: bool):
 		# base case: we found a way to "end"
 		if not node:
 			return 0
-		# base case: we are running in a cycle and have already seen this element
-		if node in visited:
-			return 0
 		# base case: we have actually found a valid path
 		if node == "out":
-			return 1
+			if seen_fft and seen_dac:
+				return 1
+			else:
+				return 0
+		if node == "fft":
+			seen_fft = True
+		elif node == "dac":
+			seen_dac = True
 		paths = graph[node]
 		result = 0
-		visited = visited.copy()
 		for path in paths:
-			visited.append(node)
-			result += dfs(path, visited)
+			result += dfs(path, seen_fft, seen_dac)
 		return result
 	
-	return dfs("you", [])
+	return dfs("svr", False, False)
 
 test_graph = {
     "aaa": ["you", "hhh"],
@@ -59,7 +63,7 @@ test_graph = {
     "iii": ["out"]
 }
 
-print(find_paths_to_end(test_graph))
+#print(find_paths_to_end(test_graph))
 
 filepath = "/Users/jonas/Downloads/input-11.txt"
 lines = []
