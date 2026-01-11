@@ -66,5 +66,5 @@ lines = []
 with open(filepath, "r") as file:
 	for line in file:
 		lines.append(line)
-#graph = build_graph(lines)
-#print(graph)	 
+graph = build_graph(lines)
+print(find_paths_to_end(graph))
