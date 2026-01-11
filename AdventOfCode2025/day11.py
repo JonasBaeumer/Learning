@@ -8,3 +8,24 @@ Important note: We have a directional graph meaning data can only flow of the di
 Important: We need to keep a track of paths we have already visited as well as which path we are currently on to prevent potential 
 cycles
 """
+
+"""
+This method build a dictionary to represent the tree structure that we can use to traverse the tree
+"""
+def build_graph(paths: list[str]):
+	graph = {}
+	for line in paths:
+		left, right = line.split(":")
+		key = left.strip()
+		values = right.strip().split()
+		graph[key] = values
+	return graph	
+	
+
+filepath = "/Users/jonas/Downloads/input-11.txt"
+lines = []
+with open(filepath, "r") as file:
+	for line in file:
+		lines.append(line)
+graph = build_graph(lines)
+print(graph)	 
