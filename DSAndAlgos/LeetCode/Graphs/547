@@ -28,12 +28,50 @@ Approach:
 		1. Build up the sets (Run: O(e*v), Space: O(n)) 
 		2. Go through the sets and find all nodes where the root is itself (Run: O(n))
 			Find capitals of all provinces
+	
+	Bug with this approach: 
+		When we connect the nodes, we always overwrite connections. We dont check wether islands are already connected.
+		Because if there are we dont need to add the connection because they already belong to the same island. 
+		Furthermore, when we do the Union approach we also need to decide on how we find which nodes are already connected
+		Because when we add larger provinces together not all nodes of the old province will point to the same root, some will
+		point to the old root which in turn points to the new root. Therefore during updating we have to decide on what do to 
+		with this node. Do change the pointer of all nodes of the old graph to the new root (then all would point to the root)
+		or do we just change the root nodes counter but then during merging need to always traverse the graph to check if node 
+		is actually already in the graph.
 """
 test = [[1, 1, 0], 
 	[1, 1, 1], 
 	[0, 1, 1]]
 
 def findCircleNum(isConnected: list[list[int]]) -> int:
+	num_of_nodes = len(isConnected)
+	
+	parent = list(range(num_of_nodes))
+	
+	def find(x: int) -> int:
+		if parent[x] == x:
+			return x
+		return find(parent[x])
+	
+	number_of_capitals = 0
+	for a in range(num_of_nodes):
+		for b in range(a, num_of_nodes):
+			# Only union if nods are connected
+			if isConnected[a][b]:
+				capital_of_a = find(a)
+				capital_of_b = find(b)
+				# If not the same we merge
+				if capital_of_a != capital_of_b:
+					parent[capital_of_b] = capital_of_a
+	for i in range(len(parent)):
+		if parent[i] == i:
+			number_of_capitals += 1
+	return number_of_capitals
+
+print(findCircleNum(test))
+	
+
+def findCircleNum_attempt_1(isConnected: list[list[int]]) -> int:
 	num_of_nodes = len(isConnected)
 	num_of_capitals = 0
 	# Initialize our union datastructure
@@ -53,6 +91,4 @@ def findCircleNum(isConnected: list[list[int]]) -> int:
 			num_of_capitals += 1
 	return num_of_capitals
 		
-
-print(findCircleNum(test))
 
