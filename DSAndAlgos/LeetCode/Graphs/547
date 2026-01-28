@@ -1,0 +1,58 @@
+"""
+There are n cities. Some of them are connected, while some are not. If city a is connected directly with city b, and city b is connected directly with city c, then city a is connected indirectly with city c.
+
+A province is a group of directly or indirectly connected cities and no other cities outside of the group.
+
+You are given an n x n matrix isConnected where isConnected[i][j] = 1 if the ith city and the jth city are directly connected, and isConnected[i][j] = 0 otherwise.
+
+Return the total number of provinces.
+"""
+"""
+1 1 0
+0 0 1
+1 1 1
+"""
+
+"""
+Approach: 
+	1. Somehow build up the provinces/sets to show me how many there are
+		Questions:
+			- Can I make my life easier by reforming the input?
+				No: Already have a valid graph structure 
+			- Is our graph bidirectional or directional?
+				Bidirectional -> I only have half of the edges in our graph since we have the each edge twice (Potential improvement for the graph)
+			- Can I do this in place? POTENTIAL OPTIMIZATION
+			- 
+	We beed to build up sets that show us all the provinces in the graph (which nodes belong to the same set, and which ones belong to other sets)
+	-> Union-Find()
+		1. Build up the sets (Run: O(e*v), Space: O(n)) 
+		2. Go through the sets and find all nodes where the root is itself (Run: O(n))
+			Find capitals of all provinces
+"""
+test = [[1, 1, 0], 
+	[1, 1, 1], 
+	[0, 1, 1]]
+
+def findCircleNum(isConnected: list[list[int]]) -> int:
+	num_of_nodes = len(isConnected)
+	num_of_capitals = 0
+	# Initialize our union datastructure
+	provinces = [n for n in range(num_of_nodes)]
+	print(provinces)
+	# Add all of our edges and consecutively merge out sets
+	for i in range(num_of_nodes):
+		for j in range(i+1, len(isConnected[0])):
+			# If there is an edge we have to perform union operation
+			if isConnected[i][j] == 1:
+				provinces[j] == i
+			# If not do nothing
+	# Find all capitals in union datastructure
+	print(provinces)
+	for i in range(len(provinces)):
+		if provinces[i] == i:
+			num_of_capitals += 1
+	return num_of_capitals
+		
+
+print(findCircleNum(test))
+
