@@ -43,6 +43,13 @@ test = [[1, 1, 0],
 	[1, 1, 1], 
 	[0, 1, 1]]
 
+"""
+Runtime: O(V*V) * O(V) (FIND inside loop) + O(V) = O(V^3) 
+Space: O(V)
+
+What could I improve? During find already change the roots to the root node of current search
+"""
+
 def findCircleNum(isConnected: list[list[int]]) -> int:
 	num_of_nodes = len(isConnected)
 	
