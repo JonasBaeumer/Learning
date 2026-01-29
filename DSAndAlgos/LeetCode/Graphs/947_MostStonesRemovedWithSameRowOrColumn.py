@@ -39,15 +39,28 @@ def removeStones(stones: list[list[int]]) -> int:
 	print(adj_list)
 
 	visited = set()
+	from collections import deque
 	def dfs(x: int):
+		q = deque([x])
+		while q:
+			cur_element = q.popleft() # BFS
+			visited.add(cur_element)
+			for neighbor in adj_list.get(cur_element, []):
+				if neighbor not in visited:
+					q.append(neighbor) 
 		return
 	
 	connected_components = 0
-	for node in adj_list.keys():
-		if node not in visited:
+	for a,b in stones:
+		if a not in visited:
 			connected_components += 1
-			dfs(node)
-	return len(visited) - connected_components
+			dfs(a)
+		if b not in visited:
+			connected_components += 1
+			dfs(b)
+	print(connected_components)
+	print(visited)
+	return len(stones) - connected_components
 	
 	# Do DFS traversal (add each node to visited while doing that)
 	
