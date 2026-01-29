@@ -13,9 +13,63 @@ Open questions:
 Approach:
 	- First approach, we can use an adjacency list to traverse the graph and figure out the number of connected components
 	- The number of elements we can remove is the the total number of stones - number of connected components
+
+Bugs in first approach:
+	- I think the adjacency list does not properly build a graph, it also build it if the stones are not set on the same column / row
+	(example: (0,1), (1,0) neither of them can be removed but we would still draw an edge between them in the adj_list
+		When do I consider an edge to have same col-row?
+		How do I build my datastructure in a way that tells which jumps I can take and which I cant?
 """
+from collections import defaultdict, deque
+
+def removeStones(stones: list[list[int]]) -> int:
+	n = len(stones)
+	
+	rows = defaultdict(list)
+	cols = defaultdict(list)
+	
+	for idx, (x,y) in enumerate(stones):
+		rows[x].append(idx)
+		cols[y].append(idx)
+	
+	print(rows)
+	print(cols)
+	
+	visited = set()
+	components = 0
+	
+	for start in range(n):
+		if start in visited:
+			continue
+		# DFS
+		q = deque([start])
+		visited.add(start)
+		components += 1
+	
+		while q:
+			i = q.popleft()
+			x, y = stones[i]
+
+			# visit all stones in the same row
+			for nei in rows[x]:
+				if nei not in visited:
+					visited.add(nei)
+					q.append(nei)
+		
+			# visit all stones in the same col
+			for nei in cols[x]:
+				if nei not in visited:
+					visited.add(nei)
+					q.append(nei)
+
+			# Need to clear so we dont rescan this row/col over and over
+			rows[x].clear()
+			cols[y].clear()
+	
+	return n-components
 
 test_list = [[0,0],[0,1],[1,0],[1,2],[2,1],[2,2]]
+removeStones(test_list)
 
 def removeStones(stones: list[list[int]]) -> int:
 	# First we have to build up our adjacency list
