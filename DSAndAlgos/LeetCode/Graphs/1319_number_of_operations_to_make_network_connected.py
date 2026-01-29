@@ -18,6 +18,9 @@ test_connections = [[0,1],[0,2],[1,2]]
 test_input_n_two = 6
 test_connections_two = [[0,1],[0,2],[0,3],[1,2],[1,3]]
 
+# Run: find, worstcase O(V) 2, meanin 2V, Union-loop: O(E) -> O(E*2V) = O(E*V)
+# Space: O(V) for parents, rest variables O(1) -> O(V)
+
 def makeConnected(n: int, connections: list[list[int]]) -> int:
 	connected_components = n
 	parents = list(range(n)) # 0 ... n-1	
