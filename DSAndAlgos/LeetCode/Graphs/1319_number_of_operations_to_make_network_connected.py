@@ -21,14 +21,20 @@ test_connections_two = [[0,1],[0,2],[0,3],[1,2],[1,3]]
 # Run: find, worstcase O(V) 2, meanin 2V, Union-loop: O(E) -> O(E*2V) = O(E*V)
 # Space: O(V) for parents, rest variables O(1) -> O(V)
 
+"""
+How can we imprive this solution?
+	We can use path compression essentially bringing down the look up time of find
+	in path compression during find we already optimize our paths to be shorter (e.g. we move them up one level)
+"""
+
 def makeConnected(n: int, connections: list[list[int]]) -> int:
 	connected_components = n
 	parents = list(range(n)) # 0 ... n-1	
 
 	def find(x):
-		if parents[x] == x:
-			return x
-		return find(parents[x])
+		if parents[x] != x:
+			parents[x] = find(parents[x])
+		return parents[x]
 	
 	# Do union find to build graph but remember to count how many edges were "unecessary"
 	redundant_edges = 0
