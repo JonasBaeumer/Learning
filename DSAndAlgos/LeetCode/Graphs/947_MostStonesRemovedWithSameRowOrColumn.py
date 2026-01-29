@@ -37,7 +37,17 @@ def removeStones(stones: list[list[int]]) -> int:
 				adj_list[a].append(b)
 	
 	print(adj_list)
-	return
+
+	visited = set()
+	def dfs(x: int):
+		return
+	
+	connected_components = 0
+	for node in adj_list.keys():
+		if node not in visited:
+			connected_components += 1
+			dfs(node)
+	return len(visited) - connected_components
 	
 	# Do DFS traversal (add each node to visited while doing that)
 	
