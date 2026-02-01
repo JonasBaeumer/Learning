@@ -31,9 +31,33 @@ Mails -> UF Ids (so I know which email is in which UF field when I run UF)
 Mails -> Account name (map mail to account name were it is first seen)
 """
 
+test_accounts = [["John","johnsmith@mail.com","john_newyork@mail.com"],["John","johnsmith@mail.com","john00@mail.com"],["Mary","mary@mail.com"],["John","johnnybravo@mail.com"]]
 
 def accountsMerge(self, accounts: list[list[str]]) -> list[list[str]]:
 	n = len(accounts)
+	number_of_mails = 0
+
+	# Create mapping between mails and ids
+	mails_to_ids = {}
+
+	# Create mapping between mails and account namems
+	mails_to_names = {}	
+	
+	# Fill up both maps while going through each email list
+	for account in accounts:
+		# Go through all mails and check if they are already mapped in mail_to_ids
+		for i in range(1:len(account)):
+			if account[i] not in mails_to_ids:
+				mails_to_ids[account[i]] = number_of_mails
+				number_of_mails += 1
+			if account[i] not in mails_to_names:
+				mails_to_names[account[i]] = account[0]
+		# Number of mails will give us which ID in UF field can be used for new mail when its added
+		# Then also check if mail is already added in mails_to_names
+
+	print(mails_to_ids)
+	print(mails_to_names)
+
 	parent = list(range(n))
 	
 	def find(x: int) -> int:
