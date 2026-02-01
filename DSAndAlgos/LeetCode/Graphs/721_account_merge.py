@@ -94,8 +94,10 @@ def accountsMerge(accounts: list[list[str]]):
 	
 	print(groups)
 	result = []		
-	for k,v in groups.items():
-		result.append(v.append(k))
+	for root, emails in groups.items():
+		emails.sort()
+		name = mails_to_names[emails[0]]  # any email in component has the correct name
+		result.append([name] + emails)
 	return result
 		
 print(accountsMerge(test_accounts))
