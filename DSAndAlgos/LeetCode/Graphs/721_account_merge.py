@@ -21,6 +21,17 @@ Questions / Challenges:
 		- How do I transform the input to somehow mirror the graph?
 """
 
+"""
+New approach: Rather than using the accounts I will work directlz with the emails and link them back to the accounts
+This should make it much easier while also helping to create any difficult account edges mapping which would be 
+quite expensive (O(n^2) just for creating the edges). 
+If I instead stay with the mail mappings I just need O(# number of total emails) to create all the edges
+While I do that I also need to create two dict mappings
+Mails -> UF Ids (so I know which email is in which UF field when I run UF)
+Mails -> Account name (map mail to account name were it is first seen)
+"""
+
+
 def accountsMerge(self, accounts: list[list[str]]) -> list[list[str]]:
 	n = len(accounts)
 	parent = list(range(n))
