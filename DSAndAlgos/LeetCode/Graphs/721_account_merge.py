@@ -69,7 +69,7 @@ def accountsMerge(accounts: list[list[str]]):
 	print(mails_to_names)
 	print(edges)
 
-	parent = list(range(n))
+	parent = list(range(number_of_mails))
 	
 	def find(x: int) -> int:
 		if parent[x] != x:
@@ -84,9 +84,18 @@ def accountsMerge(accounts: list[list[str]]):
 		if a_root != b_root:
 			parent[a_root] = b_root
 	
-	print(parent)
-	result = []
-	# for account in accounts:
-		# If not in network -> Add all the mails to our root node
+	from collections import defaultdict
+	# Now we have to build the output lists
+	# NOT SURE IF THAT WILL BREAK IF THE ORDER IS VIOLATED LEFT TO RIGHT SOMEWHERE THAT ROOT IS NOT GUARANTEED FIRST
+	groups = defaultdict(list)
+	for email, eid in mails_to_ids.items():
+		root = find(eid)
+		groups[root].append(email)
+	
+	print(groups)
+	result = []		
+	for k,v in groups.items():
+		result.append(v.append(k))
+	return result
 		
 print(accountsMerge(test_accounts))
