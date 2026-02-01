@@ -33,7 +33,7 @@ Mails -> Account name (map mail to account name were it is first seen)
 
 test_accounts = [["John","johnsmith@mail.com","john_newyork@mail.com"],["John","johnsmith@mail.com","john00@mail.com"],["Mary","mary@mail.com"],["John","johnnybravo@mail.com"]]
 
-def accountsMerge(self, accounts: list[list[str]]) -> list[list[str]]:
+def accountsMerge(accounts: list[list[str]]):
 	n = len(accounts)
 	number_of_mails = 0
 
@@ -42,21 +42,32 @@ def accountsMerge(self, accounts: list[list[str]]) -> list[list[str]]:
 
 	# Create mapping between mails and account namems
 	mails_to_names = {}	
+
+	# The list where we keep our edges for each account
+	edges = []
 	
 	# Fill up both maps while going through each email list
 	for account in accounts:
 		# Go through all mails and check if they are already mapped in mail_to_ids
-		for i in range(1:len(account)):
+		# ALso Check if mail is already addd to mails_to_names
+		# 
+		for i in range(1,len(account)):
 			if account[i] not in mails_to_ids:
 				mails_to_ids[account[i]] = number_of_mails
 				number_of_mails += 1
 			if account[i] not in mails_to_names:
 				mails_to_names[account[i]] = account[0]
-		# Number of mails will give us which ID in UF field can be used for new mail when its added
 		# Then also check if mail is already added in mails_to_names
 
+		# Now create account edge pairs
+		for i in range(1, len(account)):
+			for j in range(i, len(account)):
+				if i != j:
+					pair = (account[i], account[j])
+					edges.append(pair)
 	print(mails_to_ids)
 	print(mails_to_names)
+	print(edges)
 
 	parent = list(range(n))
 	
@@ -65,12 +76,17 @@ def accountsMerge(self, accounts: list[list[str]]) -> list[list[str]]:
 			parent[x] = find(parent[x])
 		return parent[x]
 
-	def find_connected_account(account: list[list[str]]):
-		for acc in accounts:
-			if acc != account:
-				for i in range(1, len(account)):
-					
-
-	for account in accounts:
+	# Union Merge accounts
+	for a,b in edges:
+		a_root = find(mails_to_ids[a])
+		b_root = find(mails_to_ids[b])
+		# Union
+		if a_root != b_root:
+			parent[a_root] = b_root
+	
+	print(parent)
+	result = []
+	# for account in accounts:
 		# If not in network -> Add all the mails to our root node
 		
+print(accountsMerge(test_accounts))
