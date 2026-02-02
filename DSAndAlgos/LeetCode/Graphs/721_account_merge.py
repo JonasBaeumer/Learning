@@ -33,6 +33,20 @@ Mails -> Account name (map mail to account name were it is first seen)
 
 test_accounts = [["John","johnsmith@mail.com","john_newyork@mail.com"],["John","johnsmith@mail.com","john00@mail.com"],["Mary","mary@mail.com"],["John","johnnybravo@mail.com"]]
 
+
+"""
+Runcomplexity:
+	A -> Number of Accounts, M -> Total number of Mail occurences across all accounts
+	U -> Number of unique Mail occurences across all accounts, E -> Number of Union operations
+	Build dictionaries -> O(m)
+	Union Find Unions -> Total unions ~ E, so → O(E · α(U)), and since E = O(M) → O(M · α(U))
+		->  α(U) amortized to linear since path compression grows very slowly 
+	Build groups -> iterate over unique emails once and do a find each → O(U · α(U))
+	Sort Mails inside each group: \sum_i O(s_i \log s_i) \;\le\; O(U \log U)
+	So total:
+	O(M * α(U) + U(logU))
+"""
+# Space:
 def accountsMerge(accounts: list[list[str]]):
 	n = len(accounts)
 	number_of_mails = 0
