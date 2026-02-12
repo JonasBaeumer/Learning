@@ -21,6 +21,28 @@ var (
 	z complex128 = cmplx.Sqrt(-5 + 12i)
 )
 
+// Variables declared without a value are initialized with their zero value
+// bool -> false
+// int -> 0
+// string -> ""
+// float -> 0.0
+// complex -> 0.0i
+// byte -> 0
+// rune -> 0
+// uint -> 0
+// uintptr -> 0
+
+// We can also convert types with the type conversion syntax T(v)
+var i int = 42
+var f float64 = float64(i)
+var u uint = uint(f)
+
+// constants are declared like variables but with the const keyword
+const Pi = 3.14
+const pi float64 = 3.14
+// For constants the short variable declaration syntax is NOT allowed
+// const pi = 3.14 -> This will fail
+
 func main() {
     // Also works inside a function!
 	var (
@@ -31,4 +53,14 @@ func main() {
 	fmt.Printf("Type: %T Value: %v\n", ToBe, ToBe)
 	fmt.Printf("Type: %T Value: %v\n", MaxInt, MaxInt)
 	fmt.Printf("Type: %T Value: %v\n", z, z)
+	
+	fmt.Println(f, u)
+
+	var i int
+	var f float64
+	var b bool
+	var s string
+	fmt.Printf("%v %v %v %q\n", i, f, b, s)
+
+	fmt.Println(Pi, pi)
 }
