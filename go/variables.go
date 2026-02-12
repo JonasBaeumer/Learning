@@ -9,8 +9,14 @@ var c, python, java bool
 // var c, python, java bool swift int -> WILL NOT WORK
 var a, b, d int
 
+// Variables with initializers
+var i, j int = 1, 2
+var y, z = 3, 4
+
 func main() {
 	var i int
 	fmt.Println(i, c, python, java)
 	fmt.Println(a, b, d)
+	fmt.Println(i, j) // prints 0 2 why? because we reinitialize i in the main function
+	fmt.Println(y, z) // prints 3 4 why? because we initialize y and z in the main function
 }
