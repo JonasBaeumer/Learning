@@ -18,8 +18,11 @@ func swap(x, y string) (string, string) {
 
 // Naked returns: We may name the return values in the function header, if we just return at the end the named return 
 // values will be returned 
-// That means the methods are automatically defined during default initialization
-func split(sum int) (x, y string) {
+// That means the methods are automatically defined with default initialization
+// Generally this should only be used when we have very short functions
+func split(sum int) (x, y int) {
+	x = sum * 4 / 9
+	y = sum - x
 	return
 }
 
