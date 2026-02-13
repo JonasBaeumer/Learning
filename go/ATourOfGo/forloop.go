@@ -19,5 +19,20 @@ func main() {
 		total += i
 	}
 	fmt.Println(total)
+
+	// However the initialization and post statements are optional, so the following is also possible
+	sum = 0
+	for ; sum < 100; {
+		sum += 1
+	}
+	fmt.Println(sum)
+
+	// While we dont have a normal while loop we can write a for loop the same way
+	x := 1
+	for x < 100 {
+		x += 10
+	}
+	fmt.Println(x)
+
 }
 
