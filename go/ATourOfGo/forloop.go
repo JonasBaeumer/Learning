@@ -34,5 +34,11 @@ func main() {
 	}
 	fmt.Println(x)
 
+	// You can also omit the loop conidition which will produce an infinite loop
+	// Be carefull about using this so you dont get stuck!!
+	//for {
+	//	fmt.Println("This is an infinite loop")
+	//}
+
 }
 
