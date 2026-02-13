@@ -24,6 +24,8 @@ func main() {
 
 	// Go evalates expression top to bottom meaning that all subsequents will not be looked and and therefore executed even if true
 	i := 1
+	// A switch without a condition is seen as Switch TRUE this is used to evaluate conditions 
+	// If you assign a value the cases will be mapped against the value
 	switch {
 	case i < 0:
 		fmt.Println("This is false")
