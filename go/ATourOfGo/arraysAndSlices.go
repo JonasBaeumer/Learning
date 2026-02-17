@@ -71,4 +71,39 @@ func main() {
 	// The zero value of a slice is nil, with a capity and length of 0
 	var emptyslice []int
 	fmt.Printf("len=%d cap=%d %v\n", len(emptyslice), cap(emptyslice), emptyslice)
+
+	// While the underlying array size is usually fixed, there is also a way to use slides with DYNAMICALLY sized arrays
+	// For that we can use the build it make function
+
+	a := make([]int, 5) // len(5)
+	fmt.Println(a)
+	// We can also directly both specify the capacity and the length 
+	b := make([]int, 0, 5) // len(0), cap(5)
+	fmt.Println(cap(b), len(b))
+	fmt.Println(b)
+
+	// Currently our slice has a size of 0 meaning we cant access any elements and it will throw and error 
+	// Therefore what we can do is expand the window
+	b = b[:cap(b)]
+	fmt.Println(b)
+
+	// We can also shrink it
+	b = b[:cap(b)-1]
+	fmt.Println(b)
+
+	// However slices can contain any type including other slices
+
+	// Also we can append to a slice
+	// We can do this as long as there is space in the underlying array
+	// If the underlying array is full in the background we will initialize a new array with double the size as the previous one
+	// It is important to note though that append returns a new slice!
+	c := make([]int, 0, 2)
+	c = append(c, 1, 2)
+	fmt.Println(c)
+	fmt.Printf("Capacity of c before: %d\n", cap(c))  // Will be 2
+
+  	c = append(c, 1)
+  	fmt.Printf("Capacity of c after: %d\n", cap(c))   // Will be 4
+
+	// If now append an additional value the capacity of the underlying array will double!
 }
