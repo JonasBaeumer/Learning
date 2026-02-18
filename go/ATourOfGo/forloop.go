@@ -40,5 +40,11 @@ func main() {
 	//	fmt.Println("This is an infinite loop")
 	//}
 
+	// Something important: In Go muss always use every value you declare inside a loop!
+	for i := range(dy) {  // ❌ i is declared but never used -> ERROR
+		inner := [dx]uint8{}
+		pic = append(pic, inner)
+	}
+
 }
 
