@@ -19,6 +19,16 @@ func WordCount(s string) map[string]int {
 	 	 	wordCount[string(s[i])] = 1
 		}
 	}
+
+	for _, r in range s {
+		if _, ok := wordCount[string(s[r])]; ok {
+			wordCount[string(s[r])] += 1
+		} else {
+	 	 	wordCount[string(s[r])] = 1
+		}
+	}
+
+
 	fmt.Println(wordCount)
 	return wordCount
 }
