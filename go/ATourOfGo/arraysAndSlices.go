@@ -106,4 +106,24 @@ func main() {
   	fmt.Printf("Capacity of c after: %d\n", cap(c))   // Will be 4
 
 	// If now append an additional value the capacity of the underlying array will double!
+
+	// We can use a for loop to iterate over a slice (or map)
+	// When doing that each iteration returns two values: (index, copy of the element at that index)
+	for i, v := range c {
+		fmt.Println(i, v)
+	}
+
+	// When we dont always need the index or the value we can just omit it by making it anonymous with _
+	for _, v := range c {
+		fmt.Println(v) // This will give us only the vaues
+	}
+
+	for i, _ := range c {
+		fmt.Println(i) // This will only give us the indexes
+	}
+
+	// A nicer way to get access to the index is this way
+	for i := range c {
+		fmt.Println(i)
+	}
 }
