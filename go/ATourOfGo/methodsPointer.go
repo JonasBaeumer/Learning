@@ -50,6 +50,10 @@ func ScaleFunc(v *Vertex, f float64) {
 // the specifified type in the argument e.g. func(*T) must provide something of type *T, while 
 // func(T) must provide type T
 
+// So what are the reasons to use a pointer receiver?
+// 1. You want to modify the underlying value
+// 2. You want to avoid making copies on every method call (efficient for larger structs)
+
 
 func main () {
 	v := Vertex{3, 4}
