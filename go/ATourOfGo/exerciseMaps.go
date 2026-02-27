@@ -20,6 +20,7 @@ func WordCount(s string) map[string]int {
 		}
 	}
 
+	// Other way to write the for loop
 	for _, r in range s {
 		if _, ok := wordCount[string(s[r])]; ok {
 			wordCount[string(s[r])] += 1
