@@ -48,4 +48,8 @@ func main() {
 	fmt.Println(animal.Sound()) // calls BigCat's Sound()
 	animal = jet
 	fmt.Println(animal.Sound()) // calls SmallCat's Sound()
+
+	// We can also declare an empty interface which can then handle any arbitrary type 
+	// This is usefull when handling unknown values 
+	var i interface{}
 }
