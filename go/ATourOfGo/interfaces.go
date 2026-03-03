@@ -29,6 +29,16 @@ func (c SmallCat) Sound() string {
 	return "Miauwuuuuuu!"
 }
 
+type PersonS struct {
+	Name string
+	Age  int
+}
+
+// Stringer method (see blow code)
+func (p PersonS) String() string {
+	return fmt.Sprintf("%s (%d years)", p.Name, p.Age)
+}
+
 // Notice here that the interface is implemented implicitly, this is resolved at compile time
 // if a type implements all the methods of the interface it automatically 
 // satisfied the interface
@@ -51,7 +61,7 @@ func main() {
 
 	// We can also declare an empty interface which can then handle any arbitrary type 
 	// This is usefull when handling unknown values 
-	var i interface{}
+	// var i interface{}
 
 	// Type assertions: when wrapped / declared in an interface we can not directly acess the underlying type 
 	// That is problematic because we can not access function that would work on the original type but will throw an error 
@@ -63,13 +73,13 @@ func main() {
 	// You already know if the type is a string because that is induced at compile time or explicitly declared 
 	// If like saying to the compiler, check if this string is a string - doesnt make sense
 
-	var j interface{} := "Hello World"
+	var j interface{} = "Hello World"
 	// j.ToUpper() -> j i an interface not a string! Will trigger a panic / crash (bad)
 
 	// To check what the interface contains you can do a safe assertion
 	// Essentially we are asking: "Give me the value if it exists, tell me if it does not"
 	s, ok := j.(string)
-	fmt.Println(j, ok)
+	fmt.Println(s, ok)
 
 	ints, ok := j.(int)
 	fmt.Println(ints, ok) // Will return false, but wont crash because we safe assert
@@ -85,6 +95,25 @@ func main() {
 	default:
 		fmt.Printf("unknown type: %T\n", v)
 	}
+
+	// The stringer interface: 
+	// When fmt prints a value, it checks: "does this type know how to describe itself as a string?"
+	// If it does it will call its String() method of not it will just do a raw dump of the object 
+
+	// Without a stringer 
+	type Person struct {
+		Name string
+		Age  int
+	}
+
+	p := Person{"Alice", 30}
+	fmt.Println(p) // raw dump
+
+	// With stringer 
+  
+	pS := PersonS{"Alice", 30}
+	fmt.Println(pS)  // Alice (30 years)  ← your custom format
+  
 
 
 
