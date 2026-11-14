@@ -16,7 +16,10 @@ DSAndAlgos/           # Data structures & algorithms practice
   └── LeetCode/       # General LeetCode problems, organized by topic
       └── Graphs/     # Graph-specific problems (Union-Find, DFS/BFS)
 React/Scrimba/        # React learning projects
-go/                   # Go learning directory (currently empty)
+go/                   # Go learning
+  ├── ATourOfGo/      # A Tour of Go exercises
+  ├── class/          # /class exercises, one folder per class
+  └── codebases/      # /class bug hunts in cloned repos (gitignored)
 ```
 
 ## Code Conventions
